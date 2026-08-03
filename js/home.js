@@ -28,10 +28,10 @@
     );
   }
 
-  function renderLatestNews() {
+  async function renderLatestNews() {
     var grid = document.getElementById('latestNewsGrid');
     if (!grid) return;
-    var items = window.HM.news.getLatest(6);
+    var items = await window.HM.news.getLatest(6);
 
     if (!items.length) {
       grid.innerHTML = '<div class="empty-state">No news articles yet. Check back soon.</div>';
@@ -59,10 +59,10 @@
     );
   }
 
-  function renderEvents() {
+  async function renderEvents() {
     var grid = document.getElementById('eventsGrid');
     if (!grid) return;
-    var items = window.HM.events.getSorted().slice(0, 4);
+    var items = (await window.HM.events.getSorted()).slice(0, 4);
 
     if (!items.length) {
       grid.innerHTML = '<div class="empty-state">No events yet. Check back soon.</div>';

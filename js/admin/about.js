@@ -49,8 +49,8 @@
     });
   }
 
-  function loadData() {
-    var about = window.HM.about.get();
+  async function loadData() {
+    var about = await window.HM.about.get();
     document.getElementById('aboutIntroInput').value = about.intro || '';
     document.getElementById('aboutMissionInput').value = about.mission || '';
     document.getElementById('aboutVisionInput').value = about.vision || '';
@@ -58,25 +58,35 @@
     renderValues();
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     syncValuesFromDom();
     values = values.filter(function (v) { return v.title || v.description; });
 
-    window.HM.about.save({
-      intro: document.getElementById('aboutIntroInput').value.trim(),
-      mission: document.getElementById('aboutMissionInput').value.trim(),
-      vision: document.getElementById('aboutVisionInput').value.trim(),
-      values: values
-    });
+    var submitBtn = els.form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
 
-    window.HM.activity.log('Updated About Us content');
-    window.HM.ui.toast('About Us page updated successfully.', 'success');
-    renderValues();
+    try {
+      await window.HM.about.save({
+        intro: document.getElementById('aboutIntroInput').value.trim(),
+        mission: document.getElementById('aboutMissionInput').value.trim(),
+        vision: document.getElementById('aboutVisionInput').value.trim(),
+        values: values
+      });
+
+      await window.HM.activity.log('Updated About Us content');
+      window.HM.ui.toast('About Us page updated successfully.', 'success');
+      renderValues();
+    } catch (err) {
+      window.HM.ui.toast('Could not save changes. Please try again.', 'danger');
+    } finally {
+      submitBtn.disabled = false;
+    }
   }
 
   function init() {
     els.repeater = document.getElementById('valueRepeater');
+    els.form = document.getElementById('aboutForm');
 
     document.getElementById('addValueBtn').addEventListener('click', function () {
       syncValuesFromDom();
@@ -84,7 +94,7 @@
       renderValues();
     });
 
-    document.getElementById('aboutForm').addEventListener('submit', handleSubmit);
+    els.form.addEventListener('submit', handleSubmit);
 
     loadData();
   }

@@ -8,6 +8,7 @@
   var els = {};
   var imageUpload = null;
   var editingId = null;
+  var originalImage = '';
 
   function icon(name) {
     if (name === 'edit') {
@@ -33,8 +34,8 @@
     );
   }
 
-  function renderList() {
-    var items = window.HM.history.getSorted();
+  async function renderList() {
+    var items = await window.HM.history.getSorted();
     if (!items.length) {
       els.list.innerHTML = '<div class="empty-state">No milestones yet. Click "Add Milestone" to create your first one.</div>';
       return;
@@ -42,32 +43,37 @@
     els.list.innerHTML = items.map(rowTemplate).join('');
 
     els.list.querySelectorAll('.js-edit').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', async function () {
         var id = btn.closest('.admin-row').getAttribute('data-id');
-        openModal(window.HM.history.getById(id));
+        openModal(await window.HM.history.getById(id));
       });
     });
     els.list.querySelectorAll('.js-delete').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', async function () {
         var id = btn.closest('.admin-row').getAttribute('data-id');
-        var item = window.HM.history.getById(id);
-        window.HM.ui.confirmDialog({
+        var item = await window.HM.history.getById(id);
+        var confirmed = await window.HM.ui.confirmDialog({
           title: 'Delete this milestone?',
           message: '"' + item.title + '" will be permanently removed from the timeline.',
           confirmLabel: 'Delete'
-        }).then(function (confirmed) {
-          if (!confirmed) return;
-          window.HM.history.delete(id);
-          window.HM.activity.log('Deleted history milestone "' + item.title + '"');
+        });
+        if (!confirmed) return;
+        try {
+          await window.HM.history.delete(id);
+          await window.HM.util.deleteImage(item.image);
+          await window.HM.activity.log('Deleted history milestone "' + item.title + '"');
           window.HM.ui.toast('Milestone deleted.', 'success');
           renderList();
-        });
+        } catch (err) {
+          window.HM.ui.toast('Could not delete this milestone. Please try again.', 'danger');
+        }
       });
     });
   }
 
   function resetForm() {
     editingId = null;
+    originalImage = '';
     els.form.reset();
     imageUpload.reset('');
     els.modalTitle.textContent = 'Add Milestone';
@@ -78,6 +84,7 @@
     resetForm();
     if (item) {
       editingId = item.id;
+      originalImage = item.image || '';
       document.getElementById('milestoneYear').value = item.year || '';
       document.getElementById('milestoneTitle').value = item.title || '';
       document.getElementById('milestoneDescription').value = item.description || '';
@@ -92,7 +99,7 @@
     els.modal.classList.remove('is-open');
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     var data = {
       year: document.getElementById('milestoneYear').value.trim(),
@@ -101,18 +108,28 @@
       image: imageUpload.getValue() || 'images/placeholder-wide.svg'
     };
 
-    if (editingId) {
-      window.HM.history.update(editingId, data);
-      window.HM.activity.log('Updated history milestone "' + data.title + '"');
-      window.HM.ui.toast('Milestone updated successfully.', 'success');
-    } else {
-      window.HM.history.add(data);
-      window.HM.activity.log('Added history milestone "' + data.title + '"');
-      window.HM.ui.toast('Milestone added successfully.', 'success');
-    }
+    els.submitBtn.disabled = true;
 
-    closeModal();
-    renderList();
+    try {
+      if (editingId) {
+        await window.HM.history.update(editingId, data);
+        if (originalImage && originalImage !== data.image) {
+          await window.HM.util.deleteImage(originalImage);
+        }
+        await window.HM.activity.log('Updated history milestone "' + data.title + '"');
+        window.HM.ui.toast('Milestone updated successfully.', 'success');
+      } else {
+        await window.HM.history.add(data);
+        await window.HM.activity.log('Added history milestone "' + data.title + '"');
+        window.HM.ui.toast('Milestone added successfully.', 'success');
+      }
+      closeModal();
+      renderList();
+    } catch (err) {
+      window.HM.ui.toast('Could not save this milestone. Please try again.', 'danger');
+    } finally {
+      els.submitBtn.disabled = false;
+    }
   }
 
   function init() {
@@ -122,7 +139,7 @@
     els.form = document.getElementById('historyForm');
     els.submitBtn = document.getElementById('historySubmitBtn');
 
-    imageUpload = window.HM.admin.wireImageUpload(document.getElementById('milestoneImageUpload'), '', function () {});
+    imageUpload = window.HM.admin.wireImageUpload(document.getElementById('milestoneImageUpload'), '', function () {}, 'history');
 
     document.getElementById('addMilestoneBtn').addEventListener('click', function () { openModal(null); });
     document.getElementById('historyModalClose').addEventListener('click', closeModal);

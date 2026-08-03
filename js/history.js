@@ -20,9 +20,9 @@
     );
   }
 
-  function render() {
+  async function render() {
     var wrap = document.getElementById('timeline');
-    var items = window.HM.history.getSorted();
+    var items = await window.HM.history.getSorted();
     if (!items.length) {
       wrap.innerHTML = '<div class="empty-state">Historical milestones will appear here once added.</div>';
       return;

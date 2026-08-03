@@ -18,8 +18,8 @@
     });
   }
 
-  function applySettings() {
-    var settings = window.HM.settings.get();
+  async function applySettings() {
+    var settings = await window.HM.settings.get();
     if (!settings) return;
 
     fillText('[data-settings="orgName"]', settings.orgName);

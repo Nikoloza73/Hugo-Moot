@@ -15,13 +15,13 @@
 
   var els = {};
 
-  function renderEventNotice() {
+  async function renderEventNotice() {
     if (!els.eventNotice) return;
     if (!state.activeEventId) {
       els.eventNotice.innerHTML = '';
       return;
     }
-    var event = window.HM.events.getById(state.activeEventId);
+    var event = await window.HM.events.getById(state.activeEventId);
     var name = event ? event.name : 'this event';
     els.eventNotice.innerHTML =
       '<div class="event-filter-notice">Showing photos from <strong>' + window.HM.util.escapeHtml(name) + '</strong> &nbsp;' +
@@ -37,7 +37,9 @@
   }
 
   function renderFilters() {
-    var categories = ['All'].concat(window.HM.gallery.getCategories());
+    var cats = state.all.map(function (p) { return p.category; }).filter(Boolean);
+    var categories = ['All'].concat(cats.filter(function (c, i) { return cats.indexOf(c) === i; }));
+
     els.filters.innerHTML = categories.map(function (cat) {
       var active = cat === state.activeCategory ? ' is-active' : '';
       return '<button type="button" class="gallery-filter' + active + '" data-category="' + window.HM.util.escapeHtml(cat) + '">' + window.HM.util.escapeHtml(cat) + '</button>';
@@ -134,7 +136,7 @@
     });
   }
 
-  function init() {
+  async function init() {
     els.filters = document.getElementById('galleryFilters');
     els.grid = document.getElementById('galleryGrid');
     els.lightbox = document.getElementById('lightbox');
@@ -145,11 +147,11 @@
     els.lightboxNext = document.getElementById('lightboxNext');
     els.eventNotice = document.getElementById('eventFilterNotice');
 
-    state.all = window.HM.gallery.getAll();
+    state.all = await window.HM.gallery.getAll();
     state.activeEventId = new URLSearchParams(window.location.search).get('event');
 
     renderFilters();
-    renderEventNotice();
+    await renderEventNotice();
     renderGrid();
     initLightboxControls();
   }

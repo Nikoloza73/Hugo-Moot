@@ -12,8 +12,7 @@
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
   }
 
-  function eventOptions(selectedId) {
-    var events = window.HM.events.getSorted();
+  function eventOptions(events, selectedId) {
     var opts = '<option value="">— No Event —</option>';
     opts += events.map(function (ev) {
       var sel = ev.id === selectedId ? ' selected' : '';
@@ -22,7 +21,7 @@
     return opts;
   }
 
-  function cardTemplate(photo) {
+  function cardTemplate(photo, events) {
     var esc = window.HM.util.escapeHtml;
     return (
       '<div class="admin-gallery-card" data-id="' + photo.id + '">' +
@@ -41,7 +40,7 @@
           '</div>' +
           '<div>' +
             '<label>Assign to Event</label>' +
-            '<select class="js-field-event">' + eventOptions(photo.eventId) + '</select>' +
+            '<select class="js-field-event">' + eventOptions(events, photo.eventId) + '</select>' +
           '</div>' +
           '<div class="admin-gallery-empty-hint js-saved-hint"></div>' +
         '</div>' +
@@ -56,9 +55,9 @@
     document.body.appendChild(datalist);
   }
 
-  function refreshDatalist() {
+  async function refreshDatalist() {
     var datalist = document.getElementById('categoryOptions');
-    var categories = window.HM.gallery.getCategories();
+    var categories = await window.HM.gallery.getCategories();
     datalist.innerHTML = categories.map(function (c) { return '<option value="' + window.HM.util.escapeHtml(c) + '">'; }).join('');
   }
 
@@ -68,13 +67,14 @@
     window.setTimeout(function () { hint.textContent = ''; }, 1500);
   }
 
-  function renderGrid() {
-    var photos = window.HM.gallery.getAll();
+  async function renderGrid() {
+    var photos = await window.HM.gallery.getAll();
     if (!photos.length) {
       els.grid.innerHTML = '<div class="empty-state">No photos yet. Upload your first photo above.</div>';
       return;
     }
-    els.grid.innerHTML = photos.map(cardTemplate).join('');
+    var events = await window.HM.events.getSorted();
+    els.grid.innerHTML = photos.map(function (p) { return cardTemplate(p, events); }).join('');
     refreshDatalist();
     wireCardEvents();
   }
@@ -83,31 +83,48 @@
     els.grid.querySelectorAll('.admin-gallery-card').forEach(function (card) {
       var id = card.getAttribute('data-id');
 
-      card.querySelector('.js-field-caption').addEventListener('change', function (e) {
-        window.HM.gallery.update(id, { caption: e.target.value.trim() });
-        flashSaved(card);
+      card.querySelector('.js-field-caption').addEventListener('change', async function (e) {
+        try {
+          await window.HM.gallery.update(id, { caption: e.target.value.trim() });
+          flashSaved(card);
+        } catch (err) {
+          window.HM.ui.toast('Could not save the caption. Please try again.', 'danger');
+        }
       });
-      card.querySelector('.js-field-category').addEventListener('change', function (e) {
-        window.HM.gallery.update(id, { category: e.target.value.trim() || 'Uncategorized' });
-        flashSaved(card);
-        refreshDatalist();
+      card.querySelector('.js-field-category').addEventListener('change', async function (e) {
+        try {
+          await window.HM.gallery.update(id, { category: e.target.value.trim() || 'Uncategorized' });
+          flashSaved(card);
+          refreshDatalist();
+        } catch (err) {
+          window.HM.ui.toast('Could not save the category. Please try again.', 'danger');
+        }
       });
-      card.querySelector('.js-field-event').addEventListener('change', function (e) {
-        window.HM.gallery.update(id, { eventId: e.target.value || null });
-        flashSaved(card);
+      card.querySelector('.js-field-event').addEventListener('change', async function (e) {
+        try {
+          await window.HM.gallery.update(id, { eventId: e.target.value || null });
+          flashSaved(card);
+        } catch (err) {
+          window.HM.ui.toast('Could not update the event. Please try again.', 'danger');
+        }
       });
-      card.querySelector('.js-delete-photo').addEventListener('click', function () {
-        window.HM.ui.confirmDialog({
+      card.querySelector('.js-delete-photo').addEventListener('click', async function () {
+        var confirmed = await window.HM.ui.confirmDialog({
           title: 'Delete this photo?',
           message: 'This photo will be permanently removed from the gallery.',
           confirmLabel: 'Delete'
-        }).then(function (confirmed) {
-          if (!confirmed) return;
-          window.HM.gallery.delete(id);
-          window.HM.activity.log('Deleted a gallery photo');
+        });
+        if (!confirmed) return;
+        try {
+          var photo = await window.HM.gallery.getById(id);
+          await window.HM.gallery.delete(id);
+          if (photo) await window.HM.util.deleteImage(photo.src);
+          await window.HM.activity.log('Deleted a gallery photo');
           window.HM.ui.toast('Photo deleted.', 'success');
           renderGrid();
-        });
+        } catch (err) {
+          window.HM.ui.toast('Could not delete this photo. Please try again.', 'danger');
+        }
       });
     });
   }
@@ -117,26 +134,27 @@
     input.addEventListener('change', function () {
       var files = Array.prototype.slice.call(input.files || []);
       if (!files.length) return;
-      var remaining = files.length;
-      files.forEach(function (file) {
-        window.HM.util.fileToDataUrl(file, function (dataUrl) {
-          if (dataUrl) {
-            window.HM.gallery.add({
-              src: dataUrl,
+
+      Promise.all(files.map(function (file) { return window.HM.util.uploadImage(file, 'gallery'); }))
+        .then(function (urls) {
+          return Promise.all(urls.map(function (url) {
+            return window.HM.gallery.add({
+              src: url,
               caption: 'New photo',
               category: 'Uncategorized',
               eventId: null
             });
-          }
-          remaining -= 1;
-          if (remaining === 0) {
-            window.HM.activity.log('Uploaded ' + files.length + ' new gallery photo' + (files.length > 1 ? 's' : ''));
-            window.HM.ui.toast(files.length > 1 ? 'Photos uploaded successfully.' : 'Photo uploaded successfully.', 'success');
-            renderGrid();
-          }
-        });
-      });
-      input.value = '';
+          }));
+        })
+        .then(async function () {
+          await window.HM.activity.log('Uploaded ' + files.length + ' new gallery photo' + (files.length > 1 ? 's' : ''));
+          window.HM.ui.toast(files.length > 1 ? 'Photos uploaded successfully.' : 'Photo uploaded successfully.', 'success');
+          renderGrid();
+        })
+        .catch(function () {
+          window.HM.ui.toast('Some photos failed to upload. Please try again.', 'danger');
+        })
+        .then(function () { input.value = ''; });
     });
   }
 

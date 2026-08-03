@@ -10,8 +10,9 @@
   var els = {};
   var coverUpload = null;
   var galleryItems = []; // { id: existingGalleryId|null, src }
-  var originalGalleryIds = [];
+  var originalGalleryItems = []; // { id, src } snapshot taken when the modal opened
   var editingId = null;
+  var originalCoverImage = '';
 
   function icon(name) {
     if (name === 'edit') {
@@ -37,8 +38,8 @@
     );
   }
 
-  function renderList() {
-    var items = window.HM.events.getSorted();
+  async function renderList() {
+    var items = await window.HM.events.getSorted();
     if (!items.length) {
       els.list.innerHTML = '<div class="empty-state">No events yet. Click "Add Event" to create this year\'s edition.</div>';
       return;
@@ -46,29 +47,33 @@
     els.list.innerHTML = items.map(rowTemplate).join('');
 
     els.list.querySelectorAll('.js-edit').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', async function () {
         var id = btn.closest('.admin-row').getAttribute('data-id');
-        openModal(window.HM.events.getById(id));
+        await openModal(await window.HM.events.getById(id));
       });
     });
     els.list.querySelectorAll('.js-delete').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', async function () {
         var id = btn.closest('.admin-row').getAttribute('data-id');
-        var event = window.HM.events.getById(id);
-        window.HM.ui.confirmDialog({
+        var event = await window.HM.events.getById(id);
+        var confirmed = await window.HM.ui.confirmDialog({
           title: 'Delete this event?',
           message: '"' + event.name + '" and its linked gallery photos will be permanently removed.',
           confirmLabel: 'Delete'
-        }).then(function (confirmed) {
-          if (!confirmed) return;
-          window.HM.gallery.getAll().filter(function (p) { return p.eventId === id; }).forEach(function (p) {
-            window.HM.gallery.delete(p.id);
-          });
-          window.HM.events.delete(id);
-          window.HM.activity.log('Deleted event "' + event.name + '"');
+        });
+        if (!confirmed) return;
+        try {
+          var linked = (await window.HM.gallery.getAll()).filter(function (p) { return p.eventId === id; });
+          await Promise.all(linked.map(function (p) { return window.HM.gallery.delete(p.id); }));
+          await Promise.all(linked.map(function (p) { return window.HM.util.deleteImage(p.src); }));
+          await window.HM.events.delete(id);
+          await window.HM.util.deleteImage(event.coverImage);
+          await window.HM.activity.log('Deleted event "' + event.name + '"');
           window.HM.ui.toast('Event deleted.', 'success');
           renderList();
-        });
+        } catch (err) {
+          window.HM.ui.toast('Could not delete this event. Please try again.', 'danger');
+        }
       });
     });
   }
@@ -95,28 +100,30 @@
 
   function resetForm() {
     editingId = null;
+    originalCoverImage = '';
     els.form.reset();
     galleryItems = [];
-    originalGalleryIds = [];
+    originalGalleryItems = [];
     renderGalleryPreview();
     coverUpload.reset('');
     els.modalTitle.textContent = 'Add Event';
     els.submitBtn.textContent = 'Save Event';
   }
 
-  function openModal(event) {
+  async function openModal(event) {
     resetForm();
     if (event) {
       editingId = event.id;
+      originalCoverImage = event.coverImage || '';
       document.getElementById('eventName').value = event.name || '';
       document.getElementById('eventYear').value = event.year || '';
       document.getElementById('eventDate').value = event.date || '';
       document.getElementById('eventDescription').value = event.description || '';
       coverUpload.reset(event.coverImage || '');
 
-      var linkedPhotos = window.HM.gallery.getAll().filter(function (p) { return p.eventId === event.id; });
+      var linkedPhotos = (await window.HM.gallery.getAll()).filter(function (p) { return p.eventId === event.id; });
       galleryItems = linkedPhotos.map(function (p) { return { id: p.id, src: p.src }; });
-      originalGalleryIds = linkedPhotos.map(function (p) { return p.id; });
+      originalGalleryItems = galleryItems.slice();
       renderGalleryPreview();
 
       els.modalTitle.textContent = 'Edit Event';
@@ -129,26 +136,25 @@
     els.modal.classList.remove('is-open');
   }
 
-  function reconcileGalleryLinks(eventId, eventName) {
+  async function reconcileGalleryLinks(eventId, eventName) {
     var keptIds = galleryItems.filter(function (item) { return item.id; }).map(function (item) { return item.id; });
 
-    originalGalleryIds.forEach(function (id) {
-      if (keptIds.indexOf(id) === -1) {
-        window.HM.gallery.delete(id);
-      }
-    });
+    var toDelete = originalGalleryItems.filter(function (item) { return keptIds.indexOf(item.id) === -1; });
+    var toAdd = galleryItems.filter(function (item) { return !item.id; });
 
-    galleryItems.filter(function (item) { return !item.id; }).forEach(function (item) {
-      window.HM.gallery.add({
+    await Promise.all(toDelete.map(function (item) { return window.HM.gallery.delete(item.id); }));
+    await Promise.all(toDelete.map(function (item) { return window.HM.util.deleteImage(item.src); }));
+    await Promise.all(toAdd.map(function (item) {
+      return window.HM.gallery.add({
         src: item.src,
         caption: eventName + ' — event photo',
         category: 'Event Photos',
         eventId: eventId
       });
-    });
+    }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     var data = {
       name: document.getElementById('eventName').value.trim(),
@@ -158,34 +164,55 @@
       coverImage: coverUpload.getValue() || 'images/placeholder-wide.svg'
     };
 
-    var savedEvent;
-    if (editingId) {
-      savedEvent = window.HM.events.update(editingId, data);
-      window.HM.activity.log('Updated event "' + data.name + '"');
-      window.HM.ui.toast('Event updated successfully.', 'success');
-    } else {
-      savedEvent = window.HM.events.add(data);
-      window.HM.activity.log('Created event "' + data.name + '"');
-      window.HM.ui.toast('Event created successfully.', 'success');
-    }
+    els.submitBtn.disabled = true;
 
-    reconcileGalleryLinks(savedEvent.id, savedEvent.name);
-    closeModal();
-    renderList();
+    try {
+      var savedEvent;
+      if (editingId) {
+        savedEvent = await window.HM.events.update(editingId, data);
+        if (originalCoverImage && originalCoverImage !== data.coverImage) {
+          await window.HM.util.deleteImage(originalCoverImage);
+        }
+        await window.HM.activity.log('Updated event "' + data.name + '"');
+        window.HM.ui.toast('Event updated successfully.', 'success');
+      } else {
+        savedEvent = await window.HM.events.add(data);
+        await window.HM.activity.log('Created event "' + data.name + '"');
+        window.HM.ui.toast('Event created successfully.', 'success');
+      }
+
+      await reconcileGalleryLinks(savedEvent.id, savedEvent.name);
+      closeModal();
+      renderList();
+    } catch (err) {
+      window.HM.ui.toast('Could not save this event. Please try again.', 'danger');
+    } finally {
+      els.submitBtn.disabled = false;
+    }
   }
 
   function initGalleryUpload() {
     var input = els.galleryUpload.querySelector('input[type="file"]');
+    var label = els.galleryUpload.querySelector('.image-upload__label');
+    var originalLabel = label ? label.textContent : '';
+
     input.addEventListener('change', function () {
       var files = Array.prototype.slice.call(input.files || []);
-      files.forEach(function (file) {
-        window.HM.util.fileToDataUrl(file, function (dataUrl) {
-          if (!dataUrl) return;
-          galleryItems.push({ id: null, src: dataUrl });
+      if (!files.length) return;
+      if (label) label.textContent = 'Uploading…';
+
+      Promise.all(files.map(function (file) { return window.HM.util.uploadImage(file, 'events'); }))
+        .then(function (urls) {
+          urls.forEach(function (url) { galleryItems.push({ id: null, src: url }); });
           renderGalleryPreview();
+        })
+        .catch(function () {
+          window.HM.ui.toast('Some images failed to upload. Please try again.', 'danger');
+        })
+        .then(function () {
+          if (label) label.textContent = originalLabel;
+          input.value = '';
         });
-      });
-      input.value = '';
     });
   }
 
@@ -198,7 +225,7 @@
     els.galleryUpload = document.getElementById('eventGalleryUpload');
     els.galleryPreview = document.getElementById('eventGalleryPreview');
 
-    coverUpload = window.HM.admin.wireImageUpload(document.getElementById('eventImageUpload'), '', function () {});
+    coverUpload = window.HM.admin.wireImageUpload(document.getElementById('eventImageUpload'), '', function () {}, 'events');
 
     document.getElementById('addEventBtn').addEventListener('click', function () { openModal(null); });
     document.getElementById('eventModalClose').addEventListener('click', closeModal);

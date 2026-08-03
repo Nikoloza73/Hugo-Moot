@@ -9,6 +9,7 @@
   var featuredUpload = null;
   var galleryImages = [];
   var editingId = null;
+  var originalImage = '';
 
   function icon(name) {
     if (name === 'edit') {
@@ -34,8 +35,8 @@
     );
   }
 
-  function renderList() {
-    var items = window.HM.news.getAll().slice().sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+  async function renderList() {
+    var items = (await window.HM.news.getAll()).sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
     if (!items.length) {
       els.list.innerHTML = '<div class="empty-state">No news articles yet. Click "Add News" to publish your first one.</div>';
       return;
@@ -43,27 +44,32 @@
     els.list.innerHTML = items.map(rowTemplate).join('');
 
     els.list.querySelectorAll('.js-edit').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', async function () {
         var id = btn.closest('.admin-row').getAttribute('data-id');
-        openModal(window.HM.news.getById(id));
+        openModal(await window.HM.news.getById(id));
       });
     });
     els.list.querySelectorAll('.js-delete').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', async function () {
         var row = btn.closest('.admin-row');
         var id = row.getAttribute('data-id');
-        var article = window.HM.news.getById(id);
-        window.HM.ui.confirmDialog({
+        var article = await window.HM.news.getById(id);
+        var confirmed = await window.HM.ui.confirmDialog({
           title: 'Delete this article?',
           message: '"' + article.title + '" will be permanently removed from the website.',
           confirmLabel: 'Delete'
-        }).then(function (confirmed) {
-          if (!confirmed) return;
-          window.HM.news.delete(id);
-          window.HM.activity.log('Deleted news article "' + article.title + '"');
+        });
+        if (!confirmed) return;
+        try {
+          await window.HM.news.delete(id);
+          var images = [article.image].concat(article.gallery || []);
+          await Promise.all(images.map(function (src) { return window.HM.util.deleteImage(src); }));
+          await window.HM.activity.log('Deleted news article "' + article.title + '"');
           window.HM.ui.toast('Article deleted.', 'success');
           renderList();
-        });
+        } catch (err) {
+          window.HM.ui.toast('Could not delete this article. Please try again.', 'danger');
+        }
       });
     });
   }
@@ -90,6 +96,7 @@
 
   function resetForm() {
     editingId = null;
+    originalImage = '';
     els.form.reset();
     galleryImages = [];
     renderGalleryPreview();
@@ -102,6 +109,7 @@
     resetForm();
     if (article) {
       editingId = article.id;
+      originalImage = article.image || '';
       document.getElementById('newsTitle').value = article.title || '';
       document.getElementById('newsDate').value = article.date || '';
       document.getElementById('newsCategory').value = article.category || '';
@@ -122,7 +130,7 @@
     els.modal.classList.remove('is-open');
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     var data = {
       title: document.getElementById('newsTitle').value.trim(),
@@ -134,36 +142,56 @@
       gallery: galleryImages.slice()
     };
 
-    if (editingId) {
-      window.HM.news.update(editingId, data);
-      window.HM.activity.log('Updated news article "' + data.title + '"');
-      window.HM.ui.toast('Article updated successfully.', 'success');
-    } else {
-      window.HM.news.add(data);
-      window.HM.activity.log('Published news article "' + data.title + '"');
-      window.HM.ui.toast('Article published successfully.', 'success');
-    }
+    els.submitBtn.disabled = true;
 
-    closeModal();
-    renderList();
+    try {
+      if (editingId) {
+        await window.HM.news.update(editingId, data);
+        if (originalImage && originalImage !== data.image) {
+          await window.HM.util.deleteImage(originalImage);
+        }
+        await window.HM.activity.log('Updated news article "' + data.title + '"');
+        window.HM.ui.toast('Article updated successfully.', 'success');
+      } else {
+        await window.HM.news.add(data);
+        await window.HM.activity.log('Published news article "' + data.title + '"');
+        window.HM.ui.toast('Article published successfully.', 'success');
+      }
+      closeModal();
+      renderList();
+    } catch (err) {
+      window.HM.ui.toast('Could not save this article. Please try again.', 'danger');
+    } finally {
+      els.submitBtn.disabled = false;
+    }
   }
 
   function initGalleryUpload() {
     var input = els.galleryUpload.querySelector('input[type="file"]');
+    var label = els.galleryUpload.querySelector('.image-upload__label');
+    var originalLabel = label ? label.textContent : '';
+
     input.addEventListener('change', function () {
       var files = Array.prototype.slice.call(input.files || []);
-      files.forEach(function (file) {
-        window.HM.util.fileToDataUrl(file, function (dataUrl) {
-          if (!dataUrl) return;
-          galleryImages.push(dataUrl);
+      if (!files.length) return;
+      if (label) label.textContent = 'Uploading…';
+
+      Promise.all(files.map(function (file) { return window.HM.util.uploadImage(file, 'news'); }))
+        .then(function (urls) {
+          urls.forEach(function (url) { galleryImages.push(url); });
           renderGalleryPreview();
+        })
+        .catch(function () {
+          window.HM.ui.toast('Some images failed to upload. Please try again.', 'danger');
+        })
+        .then(function () {
+          if (label) label.textContent = originalLabel;
+          input.value = '';
         });
-      });
-      input.value = '';
     });
   }
 
-  function init() {
+  async function init() {
     els.list = document.getElementById('newsList');
     els.modal = document.getElementById('newsModal');
     els.modalTitle = document.getElementById('newsModalTitle');
@@ -172,7 +200,7 @@
     els.galleryUpload = document.getElementById('newsGalleryUpload');
     els.galleryPreview = document.getElementById('newsGalleryPreview');
 
-    featuredUpload = window.HM.admin.wireImageUpload(document.getElementById('newsImageUpload'), '', function () {});
+    featuredUpload = window.HM.admin.wireImageUpload(document.getElementById('newsImageUpload'), '', function () {}, 'news');
 
     document.getElementById('addNewsBtn').addEventListener('click', function () { openModal(null); });
     document.getElementById('newsModalClose').addEventListener('click', closeModal);

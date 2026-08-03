@@ -68,10 +68,10 @@
     }).join('');
   }
 
-  function init() {
+  async function init() {
     esc = window.HM.util.escapeHtml;
     resolveImage = window.HM.util.resolveImage;
-    var about = window.HM.about.get();
+    var about = await window.HM.about.get();
     renderIntro(about);
     renderValues(about);
     renderTeam(about);

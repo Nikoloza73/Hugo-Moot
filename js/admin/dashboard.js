@@ -5,9 +5,9 @@
 (function (window, document) {
   'use strict';
 
-  function render() {
+  async function render() {
     var list = document.getElementById('activityList');
-    var items = window.HM.activity.getRecent(8);
+    var items = await window.HM.activity.getRecent(8);
     if (!items.length) {
       list.innerHTML = '<li>No recent activity yet.</li>';
       return;

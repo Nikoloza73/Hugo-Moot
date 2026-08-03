@@ -6,10 +6,17 @@
 (function (window, document) {
   'use strict';
 
-  function guardAuth() {
-    if (!window.HM.auth.isLoggedIn()) {
+  async function guardAuth() {
+    var loggedIn = await window.HM.auth.isLoggedIn();
+    if (!loggedIn) {
       window.location.href = 'login.html';
+      return;
     }
+    window.HM.auth.onChange(function (event) {
+      if (event === 'SIGNED_OUT') {
+        window.location.href = 'login.html';
+      }
+    });
   }
 
   function initSidebar() {
@@ -45,18 +52,19 @@
   function initLogout() {
     var btn = document.getElementById('logoutBtn');
     if (!btn) return;
-    btn.addEventListener('click', function () {
-      window.HM.auth.logout();
+    btn.addEventListener('click', async function () {
+      await window.HM.auth.logout();
       window.location.href = 'login.html';
     });
   }
 
   /* ---- Image upload helper -------------------------------------------
      Wires a .image-upload control: <div class="image-upload"><input type="file">…</div>
-     `getValue`/`setValue` let the caller keep the current data-URL in sync.
+     Uploads the picked file straight to Supabase Storage; `getValue()`
+     returns the resulting public URL once the upload finishes.
   --------------------------------------------------------------------- */
 
-  function wireImageUpload(container, initialSrc, onChange) {
+  function wireImageUpload(container, initialSrc, onChange, folder) {
     var input = container.querySelector('input[type="file"]');
     var preview = container.querySelector('.image-upload__preview');
     var label = container.querySelector('.image-upload__label');
@@ -81,12 +89,20 @@
     input.addEventListener('change', function () {
       var file = input.files && input.files[0];
       if (!file) return;
-      window.HM.util.fileToDataUrl(file, function (dataUrl) {
-        if (!dataUrl) return;
-        current = dataUrl;
-        renderPreview();
-        onChange(dataUrl);
-      });
+      if (label) label.textContent = 'Uploading…';
+
+      window.HM.util.uploadImage(file, folder || 'uploads')
+        .then(function (url) {
+          current = url;
+          renderPreview();
+          onChange(url);
+        })
+        .catch(function (err) {
+          console.error('HM: image upload failed', err);
+          renderPreview();
+          window.HM.ui.toast('Image upload failed. Please try again.', 'danger');
+        })
+        .then(function () { input.value = ''; });
     });
 
     renderPreview();

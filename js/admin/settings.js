@@ -6,9 +6,11 @@
   'use strict';
 
   var logoUpload = null;
+  var originalLogo = '';
 
-  function loadData() {
-    var settings = window.HM.settings.get();
+  async function loadData() {
+    var settings = await window.HM.settings.get();
+    originalLogo = settings.logo || '';
     document.getElementById('settingOrgName').value = settings.orgName || '';
     document.getElementById('settingTagline').value = settings.tagline || '';
     document.getElementById('settingEmail').value = settings.email || '';
@@ -25,31 +27,45 @@
     logoUpload.reset(settings.logo || '');
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    var submitBtn = document.querySelector('#settingsForm button[type="submit"]');
+    submitBtn.disabled = true;
 
-    window.HM.settings.save({
-      orgName: document.getElementById('settingOrgName').value.trim(),
-      tagline: document.getElementById('settingTagline').value.trim(),
-      logo: logoUpload.getValue() || '',
-      email: document.getElementById('settingEmail').value.trim(),
-      phone: document.getElementById('settingPhone').value.trim(),
-      address: document.getElementById('settingAddress').value.trim(),
-      footerText: document.getElementById('settingFooterText').value.trim(),
-      social: {
-        facebook: document.getElementById('settingFacebook').value.trim(),
-        twitter: document.getElementById('settingTwitter').value.trim(),
-        instagram: document.getElementById('settingInstagram').value.trim(),
-        linkedin: document.getElementById('settingLinkedin').value.trim()
+    try {
+      var newLogo = logoUpload.getValue() || '';
+      await window.HM.settings.save({
+        orgName: document.getElementById('settingOrgName').value.trim(),
+        tagline: document.getElementById('settingTagline').value.trim(),
+        logo: newLogo,
+        email: document.getElementById('settingEmail').value.trim(),
+        phone: document.getElementById('settingPhone').value.trim(),
+        address: document.getElementById('settingAddress').value.trim(),
+        footerText: document.getElementById('settingFooterText').value.trim(),
+        social: {
+          facebook: document.getElementById('settingFacebook').value.trim(),
+          twitter: document.getElementById('settingTwitter').value.trim(),
+          instagram: document.getElementById('settingInstagram').value.trim(),
+          linkedin: document.getElementById('settingLinkedin').value.trim()
+        }
+      });
+
+      if (originalLogo && originalLogo !== newLogo) {
+        await window.HM.util.deleteImage(originalLogo);
       }
-    });
+      originalLogo = newLogo;
 
-    window.HM.activity.log('Updated website settings');
-    window.HM.ui.toast('Website settings saved successfully.', 'success');
+      await window.HM.activity.log('Updated website settings');
+      window.HM.ui.toast('Website settings saved successfully.', 'success');
+    } catch (err) {
+      window.HM.ui.toast('Could not save settings. Please try again.', 'danger');
+    } finally {
+      submitBtn.disabled = false;
+    }
   }
 
   function init() {
-    logoUpload = window.HM.admin.wireImageUpload(document.getElementById('logoUpload'), '', function () {});
+    logoUpload = window.HM.admin.wireImageUpload(document.getElementById('logoUpload'), '', function () {}, 'settings');
     document.getElementById('settingsForm').addEventListener('submit', handleSubmit);
     loadData();
   }

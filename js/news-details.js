@@ -35,7 +35,7 @@
       '</div>';
   }
 
-  function renderArticle(article) {
+  async function renderArticle(article) {
     var esc = window.HM.util.escapeHtml;
     document.getElementById('pageTitle').textContent = article.title + ' | Hugo Moot';
 
@@ -43,7 +43,7 @@
       return '<img src="' + window.HM.util.resolveImage(src) + '" alt="' + esc(article.title) + ' — additional photo" loading="lazy">';
     }).join('');
 
-    var related = window.HM.news.getRelated(article.id, 3);
+    var related = await window.HM.news.getRelated(article.id, 3);
 
     var html =
       '<div class="article-hero">' +
@@ -74,14 +74,14 @@
     document.getElementById('articleRoot').innerHTML = html;
   }
 
-  function init() {
+  async function init() {
     var id = getIdFromUrl();
-    var article = id ? window.HM.news.getById(id) : null;
+    var article = id ? await window.HM.news.getById(id) : null;
     if (!article) {
       renderNotFound();
       return;
     }
-    renderArticle(article);
+    await renderArticle(article);
   }
 
   window.HM.ready(init);

@@ -26,21 +26,24 @@
 
       <form class="login-form" id="loginForm">
         <div class="form-field">
-          <label for="loginUser">Username</label>
-          <input type="text" id="loginUser" name="username" placeholder="admin" required>
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" name="email" placeholder="you@example.com" required>
         </div>
         <div class="form-field">
           <label for="loginPass">Password</label>
           <input type="password" id="loginPass" name="password" placeholder="••••••••" required>
         </div>
-        <button type="submit" class="btn btn-primary btn-block btn-lg">Log In</button>
+        <p class="login-error" id="loginError" role="alert" style="display:none; color: var(--color-danger); font-size: var(--fs-small); margin-bottom: var(--space-sm);"></p>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginSubmitBtn">Log In</button>
       </form>
 
-      <p class="login-hint">This is a demo login for content editing purposes. Any username and password will work.</p>
+      <p class="login-hint">Staff accounts are managed in the Supabase dashboard under Authentication → Users.</p>
       <p class="login-hint"><a href="../index.html">← Back to Website</a></p>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="../js/supabase-config.js"></script>
   <script src="../js/data-store.js"></script>
   <script src="../js/ui.js"></script>
   <script src="../js/admin/login.js"></script>

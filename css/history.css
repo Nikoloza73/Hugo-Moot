@@ -1,0 +1,114 @@
+/* ==========================================================================
+   History page — timeline
+   ========================================================================== */
+
+.timeline {
+  position: relative;
+  max-width: 980px;
+  margin-inline: auto;
+  padding-block: var(--space-md);
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-border-strong);
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  padding-block: var(--space-lg);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: var(--space-lg);
+  width: 13px;
+  height: 13px;
+  background: var(--color-accent);
+  border: 3px solid var(--color-bg);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 1px var(--color-accent);
+  z-index: 1;
+}
+
+.timeline-item__media {
+  grid-column: 1;
+}
+
+.timeline-item__content {
+  grid-column: 2;
+  align-self: center;
+}
+
+.timeline-item:nth-child(even) .timeline-item__media {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.timeline-item:nth-child(even) .timeline-item__content {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+}
+
+.timeline-item__media img {
+  border: 1px solid var(--color-border);
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  width: 100%;
+}
+
+.timeline-item__year {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 0.4rem;
+}
+
+.timeline-item__title {
+  margin-bottom: var(--space-xs);
+}
+
+.timeline-item__desc {
+  font-size: var(--fs-small);
+}
+
+@media (max-width: 780px) {
+  .timeline::before { left: 20px; }
+
+  .timeline-item,
+  .timeline-item:nth-child(even) {
+    grid-template-columns: 1fr;
+    padding-left: 50px;
+    gap: var(--space-sm);
+  }
+
+  .timeline-item::before { left: 20px; top: var(--space-lg); }
+
+  .timeline-item__media,
+  .timeline-item:nth-child(even) .timeline-item__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .timeline-item__content,
+  .timeline-item:nth-child(even) .timeline-item__content {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+  }
+}

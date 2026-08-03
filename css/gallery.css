@@ -1,0 +1,175 @@
+/* ==========================================================================
+   Gallery page
+   ========================================================================== */
+
+.event-filter-notice {
+  background-color: var(--color-accent-light);
+  color: var(--color-accent-dark);
+  border: 1px solid var(--color-accent);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-small);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.gallery-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: var(--space-lg);
+}
+
+.gallery-filter {
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.gallery-filter:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.gallery-filter.is-active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+}
+
+.gallery-item {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-item__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(22,33,58,0) 45%, rgba(22,33,58,0.82) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-sm);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.gallery-item:hover .gallery-item__overlay {
+  opacity: 1;
+}
+
+.gallery-item__caption {
+  color: var(--color-white);
+  font-size: var(--fs-tiny);
+  line-height: 1.4;
+}
+
+@media (max-width: 980px) {
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 700px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 420px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+}
+
+/* ---- Lightbox --------------------------------------------------------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 12, 16, 0.94);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+
+.lightbox[hidden] { display: none; }
+
+.lightbox__figure {
+  max-width: min(92vw, 1100px);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightbox__figure img {
+  max-width: 100%;
+  max-height: 76vh;
+  object-fit: contain;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.lightbox__figure figcaption {
+  color: rgba(255,255,255,0.82);
+  font-size: var(--fs-small);
+  margin-top: var(--space-sm);
+  text-align: center;
+  max-width: 640px;
+}
+
+.lightbox__close,
+.lightbox__nav {
+  position: absolute;
+  color: var(--color-white);
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: background-color var(--transition-fast);
+}
+
+.lightbox__close:hover,
+.lightbox__nav:hover {
+  background-color: rgba(255,255,255,0.12);
+}
+
+.lightbox__close { top: var(--space-md); right: var(--space-md); }
+.lightbox__close svg { width: 20px; height: 20px; }
+
+.lightbox__nav { top: 50%; transform: translateY(-50%); }
+.lightbox__nav svg { width: 22px; height: 22px; }
+.lightbox__nav--prev { left: var(--space-md); }
+.lightbox__nav--next { right: var(--space-md); }
+
+@media (max-width: 640px) {
+  .lightbox__close, .lightbox__nav { width: 40px; height: 40px; }
+  .lightbox__nav--prev { left: var(--space-xs); }
+  .lightbox__nav--next { right: var(--space-xs); }
+}

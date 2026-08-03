@@ -1,0 +1,236 @@
+/* ==========================================================================
+   Base typography & layout primitives
+   ========================================================================== */
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  color: var(--color-ink);
+  background-color: var(--color-bg);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: var(--lh-heading);
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--fs-h1); line-height: var(--lh-tight); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); }
+
+p {
+  color: var(--color-ink-soft);
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  color: var(--color-ink-soft);
+}
+
+strong { font-weight: 600; }
+
+/* ---- Layout containers -------------------------------------------------*/
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+main {
+  display: block;
+}
+
+section {
+  padding-block: var(--space-xl);
+}
+
+.section-tight { padding-block: var(--space-lg); }
+
+/* ---- Section heading pattern -------------------------------------------*/
+
+.section-heading {
+  max-width: 700px;
+  margin-bottom: var(--space-lg);
+}
+
+.section-heading--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--fs-tiny);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+
+.section-heading h2 {
+  margin-bottom: var(--space-xs);
+}
+
+.section-heading p {
+  font-size: var(--fs-lead);
+}
+
+/* ---- Buttons -------------------------------------------------------------*/
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  padding: 0.9rem 2rem;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  border-color: var(--color-accent);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-ink);
+  color: var(--color-white);
+}
+
+.btn-outline-light {
+  background-color: transparent;
+  color: var(--color-white);
+  border-color: rgba(255,255,255,0.7);
+}
+
+.btn-outline-light:hover {
+  background-color: var(--color-white);
+  color: var(--color-ink);
+  border-color: var(--color-white);
+}
+
+.btn-text {
+  padding: 0;
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-accent);
+  border: none;
+  position: relative;
+}
+
+.btn-text::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--transition-base);
+}
+
+.btn-text:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.btn-block { width: 100%; }
+
+.btn-sm { padding: 0.6rem 1.2rem; font-size: var(--fs-tiny); }
+.btn-lg { padding: 1.1rem 2.6rem; font-size: var(--fs-body); }
+
+/* ---- Utility -------------------------------------------------------------*/
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.text-center { text-align: center; }
+.muted { color: var(--color-ink-muted); }
+
+.divider {
+  height: 1px;
+  background-color: var(--color-border);
+  border: none;
+  margin-block: var(--space-lg);
+}
+
+.bg-alt { background-color: var(--color-bg-alt); }
+
+/* ---- Fade-in-on-scroll utility ------------------------------------------*/
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- Focus states ---------------------------------------------------- */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ---- Skip link ---------------------------------------------------------*/
+
+.skip-link {
+  position: absolute;
+  left: 0;
+  top: -60px;
+  background: var(--color-accent);
+  color: var(--color-white);
+  padding: 0.75rem 1.25rem;
+  z-index: 999;
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: 0;
+}

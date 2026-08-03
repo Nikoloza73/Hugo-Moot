@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <rect width="600" height="600" fill="#e5e2db"/>
+  <rect x="0" y="0" width="600" height="600" fill="none" stroke="#c9c4b8" stroke-width="2"/>
+  <line x1="0" y1="0" x2="600" y2="600" stroke="#d8d4c8" stroke-width="1"/>
+  <line x1="600" y1="0" x2="0" y2="600" stroke="#d8d4c8" stroke-width="1"/>
+  <text x="300" y="290" font-family="Georgia, serif" font-size="22" fill="#8a8477" text-anchor="middle">HUGO MOOT</text>
+  <text x="300" y="320" font-family="Arial, sans-serif" font-size="13" letter-spacing="3" fill="#a8a294" text-anchor="middle">PLACEHOLDER</text>
+</svg>

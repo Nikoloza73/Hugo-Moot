@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">News | Hugo Moot</title>
+  <meta name="description" content="Read the latest news and announcements from Hugo Moot.">
+  <link rel="icon" href="../images/placeholder-square.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/navigation.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/news-details.css">
+</head>
+<body data-page="news">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="../index.html" class="brand">
+        <span class="brand__mark" data-settings-logo>HM</span>
+        <span class="brand__text">
+          <span class="brand__name" data-settings="orgName">Hugo Moot</span>
+          <span class="brand__tag" data-settings="tagline">International Moot Court Competition</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Primary">
+        <ul class="main-nav__list">
+          <li><a href="../index.html" class="main-nav__link" data-page="home">Home</a></li>
+          <li><a href="about.html" class="main-nav__link" data-page="about">About Us</a></li>
+          <li><a href="history.html" class="main-nav__link" data-page="history">History</a></li>
+          <li><a href="gallery.html" class="main-nav__link" data-page="gallery">Gallery</a></li>
+          <li><a href="../index.html#events" class="main-nav__link">Events</a></li>
+          <li><a href="../index.html#news" class="main-nav__link">News</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a href="about.html#contact" class="btn btn-primary btn-sm">Contact Us</a>
+        </div>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <article id="articleRoot">
+      <!-- Populated by js/news-details.js -->
+      <div class="container section-tight">
+        <p class="muted">Loading article...</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand__name" data-settings="orgName">Hugo Moot</div>
+          <p class="footer-brand__desc" data-settings="footerText">Hugo Moot brings together students of international law from across the globe.</p>
+          <div class="footer-social">
+            <a href="#" data-social="facebook" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2C15.9 3.1 14.8 3 13.6 3c-2.6 0-4.4 1.6-4.4 4.5V9.8H6.5V13h2.7v8h4.3Z"/></svg></a>
+            <a href="#" data-social="twitter" aria-label="Twitter / X"><svg viewBox="0 0 24 24"><path d="m3 3 7.5 9.6L3.4 21h2l6.1-6.7L16.5 21H21l-7.8-10L20.6 3h-2l-5.7 6.2L8 3H3Z"/></svg></a>
+            <a href="#" data-social="instagram" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm4 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm4.6-3.2a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg></a>
+            <a href="#" data-social="linkedin" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M5.3 3.5a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8ZM3.6 9h3.4v11.5H3.6V9Zm6.2 0h3.3v1.6h.1c.5-.9 1.7-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.3h-3.4v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7h-3.4V9Z"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-heading">Quick Links</div>
+          <ul class="footer-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="history.html">History</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Contact</div>
+          <ul class="footer-contact">
+            <li data-settings="address">Peace Palace Avenue 1, The Hague</li>
+            <li><a data-settings="email" data-settings-href="email" href="#">info@hugomoot.org</a></li>
+            <li><a data-settings="phone" data-settings-href="phone" href="#">+31 (0)70 123 4567</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Hugo Moot</div>
+          <p style="color:rgba(255,255,255,.65);font-size:.875rem;">An academic, non-profit initiative dedicated to the advancement of international legal education. Placeholder text.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-settings="year">2026</span> <span data-settings="orgName">Hugo Moot</span>. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="../admin/login.html">Admin Login</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data-store.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/navigation.js"></script>
+  <script src="../js/footer.js"></script>
+  <script src="../js/news-details.js"></script>
+</body>
+</html>

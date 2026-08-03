@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>News | Hugo Moot Admin</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../images/placeholder-square.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body" data-page="news">
+  <div class="admin-layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar__brand">
+        <span class="brand__mark">HM</span>
+        <div>
+          <div class="admin-sidebar__name">Hugo Moot</div>
+          <div class="admin-sidebar__tag">Admin Panel</div>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <a href="dashboard.html" class="admin-nav__link" data-page="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="news.html" class="admin-nav__link" data-page="news">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M7 8h6M7 12h10M7 16h10"/></svg>
+          News
+        </a>
+        <a href="events.html" class="admin-nav__link" data-page="events">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+          Events
+        </a>
+        <a href="gallery.html" class="admin-nav__link" data-page="gallery">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="1.5"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5-11 11"/></svg>
+          Gallery
+        </a>
+        <a href="history.html" class="admin-nav__link" data-page="history">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          History
+        </a>
+        <a href="about.html" class="admin-nav__link" data-page="about">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+          About Us
+        </a>
+        <a href="settings.html" class="admin-nav__link" data-page="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1Z"/></svg>
+          Settings
+        </a>
+      </nav>
+      <div class="admin-sidebar__footer">
+        <a href="../index.html" target="_blank" rel="noopener" class="admin-sidebar__view-site">↗ View Website</a>
+        <button type="button" class="admin-sidebar__logout" id="logoutBtn">⎋ Log Out</button>
+      </div>
+    </aside>
+
+    <button class="admin-mobile-toggle" id="adminMobileToggle">☰ Menu</button>
+
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div>
+          <h1>News</h1>
+          <p class="muted">Publish announcements and updates. The three most recent articles automatically appear on your homepage.</p>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg" id="addNewsBtn">+ Add News</button>
+      </div>
+
+      <div class="admin-list" id="newsList"></div>
+    </main>
+  </div>
+
+  <!-- Add / Edit News Modal -->
+  <div class="modal-overlay" id="newsModal">
+    <div class="modal modal--form">
+      <button type="button" class="modal__close" id="newsModalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h3 id="newsModalTitle">Add News Article</h3>
+      <p class="muted">Fill in the details below, then click Publish.</p>
+
+      <form id="newsForm">
+        <div class="form-field">
+          <label for="newsTitle">Title</label>
+          <input type="text" id="newsTitle" required placeholder="e.g. Registration Opens for 2027 Season">
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="newsDate">Publication Date</label>
+            <input type="date" id="newsDate" required>
+          </div>
+          <div class="form-field">
+            <label for="newsCategory">Category</label>
+            <input type="text" id="newsCategory" placeholder="e.g. Announcements">
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="newsSummary">Short Summary</label>
+          <textarea id="newsSummary" required placeholder="A one or two sentence summary shown on news cards." style="min-height:80px;"></textarea>
+        </div>
+        <div class="form-field">
+          <label for="newsContent">Full Content</label>
+          <textarea id="newsContent" required placeholder="The full article text. Leave a blank line between paragraphs."></textarea>
+          <p class="form-hint">Tip: leave a blank line between paragraphs.</p>
+        </div>
+        <div class="form-field">
+          <label>Featured Image</label>
+          <div class="image-upload" id="newsImageUpload">
+            <img class="image-upload__preview" style="display:none;">
+            <span class="image-upload__label">Click or drag to upload an image</span>
+            <input type="file" accept="image/*">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Additional Images (optional)</label>
+          <div class="image-upload" id="newsGalleryUpload">
+            <span class="image-upload__label">Click to add photos to this article's gallery</span>
+            <input type="file" accept="image/*" multiple>
+          </div>
+          <div class="admin-gallery-grid" id="newsGalleryPreview" style="margin-top: var(--space-xs);"></div>
+        </div>
+
+        <div class="modal__actions" style="margin-top: var(--space-md);">
+          <button type="button" class="btn btn-secondary" id="newsModalCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="newsSubmitBtn">Publish News</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/data-store.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/admin/admin-common.js"></script>
+  <script src="../js/admin/news.js"></script>
+</body>
+</html>

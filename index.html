@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hugo Moot | International Moot Court Competition</title>
+  <meta name="description" content="Hugo Moot is an international moot court competition for students of public international law.">
+  <link rel="icon" href="images/placeholder-square.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.html" class="brand">
+        <span class="brand__mark" data-settings-logo>HM</span>
+        <span class="brand__text">
+          <span class="brand__name" data-settings="orgName">Hugo Moot</span>
+          <span class="brand__tag" data-settings="tagline">International Moot Court Competition</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" id="mainNav" aria-label="Primary">
+        <ul class="main-nav__list">
+          <li><a href="index.html" class="main-nav__link" data-page="home">Home</a></li>
+          <li><a href="pages/about.html" class="main-nav__link" data-page="about">About Us</a></li>
+          <li><a href="pages/history.html" class="main-nav__link" data-page="history">History</a></li>
+          <li><a href="pages/gallery.html" class="main-nav__link" data-page="gallery">Gallery</a></li>
+          <li><a href="#events" class="main-nav__link">Events</a></li>
+          <li><a href="#news" class="main-nav__link">News</a></li>
+        </ul>
+        <div class="nav-cta">
+          <a href="pages/about.html#contact" class="btn btn-primary btn-sm">Contact Us</a>
+        </div>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav">
+        <span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span><span class="nav-toggle__bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__media">
+        <img src="images/placeholder-hero.svg" alt="Hugo Moot delegates in the final oral round">
+        <div class="hero__overlay"></div>
+      </div>
+      <div class="container hero__content animate-fade-in-up">
+        <span class="eyebrow eyebrow--light">International Moot Court Competition</span>
+        <h1>Advancing the Practice of International Law</h1>
+        <p class="hero__lead">Hugo Moot brings together the world's most promising law students to research, write, and argue before distinguished panels of international jurists.</p>
+        <div class="hero__actions">
+          <a href="pages/about.html" class="btn btn-primary btn-lg">Learn More</a>
+          <a href="pages/history.html" class="btn btn-outline-light btn-lg">Our History</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="intro">
+      <div class="container intro__grid">
+        <div class="intro__media reveal">
+          <img src="images/placeholder-card.svg" alt="Hugo Moot competitors in discussion">
+        </div>
+        <div class="intro__text reveal">
+          <span class="eyebrow">Who We Are</span>
+          <h2>A Global Community of Advocates</h2>
+          <p class="lead">For over a decade, Hugo Moot has provided a rigorous academic platform for students of public international law to test their research and advocacy skills against peers from around the world.</p>
+          <p>This is placeholder introductory content. Real copy describing the organization's history, purpose, and community will be provided and inserted here in a future update.</p>
+          <a href="pages/about.html" class="btn-text">Discover Our Story →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Latest News -->
+    <section class="news-section bg-alt" id="news">
+      <div class="container">
+        <div class="section-heading section-heading--center reveal">
+          <span class="eyebrow">Stay Informed</span>
+          <h2>Latest News</h2>
+          <p>Announcements, results, and updates from the Hugo Moot community.</p>
+        </div>
+        <div class="news-grid" id="latestNewsGrid" aria-live="polite">
+          <!-- Populated by js/home.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Events -->
+    <section id="events">
+      <div class="container">
+        <div class="section-heading section-heading--center reveal">
+          <span class="eyebrow">Every Year</span>
+          <h2>Hugo Moot Events</h2>
+          <p>Each edition of the competition brings new teams, new cases, and new photographs to the archive.</p>
+        </div>
+        <div class="events-grid" id="eventsGrid" aria-live="polite">
+          <!-- Populated by js/home.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Navigation -->
+    <section class="quick-nav">
+      <div class="container">
+        <div class="section-heading section-heading--center reveal">
+          <span class="eyebrow">Explore</span>
+          <h2>Find Out More</h2>
+        </div>
+        <div class="quick-nav__grid">
+          <a href="pages/about.html" class="icon-card reveal">
+            <span class="icon-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 7l9 4 9-4-9-4Z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+            </span>
+            <h3 class="icon-card__title">About Us</h3>
+            <p class="muted">Our mission, vision, values, and the people behind Hugo Moot.</p>
+            <span class="icon-card__cta">Read More →</span>
+            <span class="icon-card__link" aria-hidden="true"></span>
+          </a>
+          <a href="pages/history.html" class="icon-card reveal">
+            <span class="icon-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            </span>
+            <h3 class="icon-card__title">History</h3>
+            <p class="muted">Explore the milestones that have shaped our competition.</p>
+            <span class="icon-card__cta">Read More →</span>
+            <span class="icon-card__link" aria-hidden="true"></span>
+          </a>
+          <a href="pages/gallery.html" class="icon-card reveal">
+            <span class="icon-card__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1.5"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5-11 11"/></svg>
+            </span>
+            <h3 class="icon-card__title">Gallery</h3>
+            <p class="muted">Photographs from oral rounds, ceremonies, and past events.</p>
+            <span class="icon-card__cta">Read More →</span>
+            <span class="icon-card__link" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="cta-band">
+      <div class="container cta-band__inner reveal">
+        <h2>Ready to Compete?</h2>
+        <p>Registration for the upcoming season is open to eligible universities worldwide.</p>
+        <a href="pages/about.html#contact" class="btn btn-primary btn-lg">Get in Touch</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand__name" data-settings="orgName">Hugo Moot</div>
+          <p class="footer-brand__desc" data-settings="footerText">Hugo Moot brings together students of international law from across the globe.</p>
+          <div class="footer-social">
+            <a href="#" data-social="facebook" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2C15.9 3.1 14.8 3 13.6 3c-2.6 0-4.4 1.6-4.4 4.5V9.8H6.5V13h2.7v8h4.3Z"/></svg></a>
+            <a href="#" data-social="twitter" aria-label="Twitter / X"><svg viewBox="0 0 24 24"><path d="m3 3 7.5 9.6L3.4 21h2l6.1-6.7L16.5 21H21l-7.8-10L20.6 3h-2l-5.7 6.2L8 3H3Z"/></svg></a>
+            <a href="#" data-social="instagram" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm4 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm4.6-3.2a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg></a>
+            <a href="#" data-social="linkedin" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M5.3 3.5a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8ZM3.6 9h3.4v11.5H3.6V9Zm6.2 0h3.3v1.6h.1c.5-.9 1.7-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.3h-3.4v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7h-3.4V9Z"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-heading">Quick Links</div>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pages/about.html">About Us</a></li>
+            <li><a href="pages/history.html">History</a></li>
+            <li><a href="pages/gallery.html">Gallery</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Contact</div>
+          <ul class="footer-contact">
+            <li data-settings="address">Peace Palace Avenue 1, The Hague</li>
+            <li><a data-settings="email" data-settings-href="email" href="#">info@hugomoot.org</a></li>
+            <li><a data-settings="phone" data-settings-href="phone" href="#">+31 (0)70 123 4567</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-heading">Hugo Moot</div>
+          <p style="color:rgba(255,255,255,.65);font-size:.875rem;">An academic, non-profit initiative dedicated to the advancement of international legal education. Placeholder text.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span data-settings="year">2026</span> <span data-settings="orgName">Hugo Moot</span>. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="admin/login.html">Admin Login</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data-store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

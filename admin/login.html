@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Hugo Moot</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../images/placeholder-square.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-card animate-fade-in-up">
+      <span class="brand__mark">HM</span>
+      <h1>Admin Panel</h1>
+      <p class="muted">Log in to manage your website content.</p>
+
+      <form class="login-form" id="loginForm">
+        <div class="form-field">
+          <label for="loginUser">Username</label>
+          <input type="text" id="loginUser" name="username" placeholder="admin" required>
+        </div>
+        <div class="form-field">
+          <label for="loginPass">Password</label>
+          <input type="password" id="loginPass" name="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Log In</button>
+      </form>
+
+      <p class="login-hint">This is a demo login for content editing purposes. Any username and password will work.</p>
+      <p class="login-hint"><a href="../index.html">← Back to Website</a></p>
+    </div>
+  </div>
+
+  <script src="../js/data-store.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/admin/login.js"></script>
+</body>
+</html>

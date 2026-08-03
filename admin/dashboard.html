@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Hugo Moot Admin</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="../images/placeholder-square.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body" data-page="dashboard">
+  <div class="admin-layout">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar__brand">
+        <span class="brand__mark">HM</span>
+        <div>
+          <div class="admin-sidebar__name">Hugo Moot</div>
+          <div class="admin-sidebar__tag">Admin Panel</div>
+        </div>
+      </div>
+      <nav class="admin-nav">
+        <a href="dashboard.html" class="admin-nav__link" data-page="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="news.html" class="admin-nav__link" data-page="news">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M7 8h6M7 12h10M7 16h10"/></svg>
+          News
+        </a>
+        <a href="events.html" class="admin-nav__link" data-page="events">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+          Events
+        </a>
+        <a href="gallery.html" class="admin-nav__link" data-page="gallery">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="1.5"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5-11 11"/></svg>
+          Gallery
+        </a>
+        <a href="history.html" class="admin-nav__link" data-page="history">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          History
+        </a>
+        <a href="about.html" class="admin-nav__link" data-page="about">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+          About Us
+        </a>
+        <a href="settings.html" class="admin-nav__link" data-page="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1Z"/></svg>
+          Settings
+        </a>
+      </nav>
+      <div class="admin-sidebar__footer">
+        <a href="../index.html" target="_blank" rel="noopener" class="admin-sidebar__view-site">↗ View Website</a>
+        <button type="button" class="admin-sidebar__logout" id="logoutBtn">⎋ Log Out</button>
+      </div>
+    </aside>
+
+    <button class="admin-mobile-toggle" id="adminMobileToggle">☰ Menu</button>
+
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div>
+          <h1>Welcome Back</h1>
+          <p class="muted">This is your control center. Choose an action below to update the website.</p>
+        </div>
+      </div>
+
+      <div class="dashboard-tiles">
+        <a href="news.html" class="dashboard-tile">
+          <span class="dashboard-tile__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="dashboard-tile__title">Add News</span>
+          <span class="dashboard-tile__desc">Publish an announcement or update for visitors to read.</span>
+        </a>
+        <a href="events.html" class="dashboard-tile">
+          <span class="dashboard-tile__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="dashboard-tile__title">Add Event</span>
+          <span class="dashboard-tile__desc">Create this year's Hugo Moot event and its photo gallery.</span>
+        </a>
+        <a href="gallery.html" class="dashboard-tile">
+          <span class="dashboard-tile__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+          <span class="dashboard-tile__title">Add Gallery Photos</span>
+          <span class="dashboard-tile__desc">Upload new photographs to the public photo gallery.</span>
+        </a>
+        <a href="about.html" class="dashboard-tile">
+          <span class="dashboard-tile__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          </span>
+          <span class="dashboard-tile__title">Edit About Us</span>
+          <span class="dashboard-tile__desc">Update your description, mission, vision, and values.</span>
+        </a>
+        <a href="history.html" class="dashboard-tile">
+          <span class="dashboard-tile__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          </span>
+          <span class="dashboard-tile__title">Edit History</span>
+          <span class="dashboard-tile__desc">Add or update milestones on your history timeline.</span>
+        </a>
+        <a href="settings.html" class="dashboard-tile">
+          <span class="dashboard-tile__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          </span>
+          <span class="dashboard-tile__title">Website Settings</span>
+          <span class="dashboard-tile__desc">Change your organization name, logo, and contact details.</span>
+        </a>
+      </div>
+
+      <div class="activity-panel">
+        <h2>Recent Activity</h2>
+        <ul class="activity-list" id="activityList"></ul>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/data-store.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/admin/admin-common.js"></script>
+  <script src="../js/admin/dashboard.js"></script>
+</body>
+</html>

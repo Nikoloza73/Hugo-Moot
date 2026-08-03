@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Home page
+   ========================================================================== */
+
+/* ---- Hero ----------------------------------------------------------------*/
+
+.hero {
+  position: relative;
+  min-height: 88vh;
+  display: flex;
+  align-items: flex-end;
+  color: var(--color-white);
+  overflow: hidden;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(22,33,58,0.55) 0%, rgba(22,33,58,0.55) 40%, rgba(15,20,30,0.88) 100%);
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  padding-bottom: var(--space-2xl);
+}
+
+.eyebrow--light {
+  color: #e3c58f;
+}
+
+.hero h1 {
+  color: var(--color-white);
+  margin-bottom: var(--space-sm);
+}
+
+.hero__lead {
+  font-size: var(--fs-lead);
+  color: rgba(255,255,255,0.86);
+  max-width: 560px;
+  margin-bottom: var(--space-md);
+}
+
+.hero__actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* ---- Introduction ---------------------------------------------------------*/
+
+.intro__grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.intro__media img {
+  border: 1px solid var(--color-border);
+}
+
+@media (max-width: 860px) {
+  .intro__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+/* ---- News grid -------------------------------------------------------- */
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+@media (max-width: 980px) {
+  .news-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .news-grid { grid-template-columns: 1fr; }
+}
+
+.news-section .section-heading + div {
+  margin-top: 0;
+}
+
+.news-section__footer {
+  text-align: center;
+  margin-top: var(--space-lg);
+}
+
+/* ---- Events -------------------------------------------------------------*/
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.event-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  overflow: hidden;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.event-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+.event-card__media { overflow: hidden; }
+.event-card__media img { width: 100%; height: 100%; object-fit: cover; min-height: 180px; }
+
+.event-card__body {
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card__year {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--color-accent);
+  margin-bottom: 0.2rem;
+}
+
+.event-card__name { margin-bottom: 0.5rem; font-size: 1.15rem; }
+
+.event-card__date {
+  font-size: var(--fs-tiny);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-muted);
+  margin-bottom: 0.6rem;
+}
+
+.event-card__desc {
+  font-size: var(--fs-small);
+  margin-bottom: var(--space-sm);
+  flex: 1;
+}
+
+@media (max-width: 760px) {
+  .events-grid { grid-template-columns: 1fr; }
+  .event-card { grid-template-columns: 1fr; }
+  .event-card__media img { min-height: 200px; }
+}
+
+/* ---- Quick nav ---------------------------------------------------------*/
+
+.quick-nav__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+@media (max-width: 860px) {
+  .quick-nav__grid { grid-template-columns: 1fr; }
+}
+
+/* ---- CTA band ------------------------------------------------------------*/
+
+.cta-band {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
+
+.cta-band__inner {
+  text-align: center;
+  max-width: 640px;
+}
+
+.cta-band h2 { color: var(--color-white); margin-bottom: var(--space-xs); }
+.cta-band p { color: rgba(255,255,255,0.86); margin-bottom: var(--space-md); }
+.cta-band .btn-primary {
+  background: var(--color-white);
+  color: var(--color-accent);
+  border-color: var(--color-white);
+}
+.cta-band .btn-primary:hover {
+  background: var(--color-ink);
+  color: var(--color-white);
+  border-color: var(--color-ink);
+}

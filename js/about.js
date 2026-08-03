@@ -1,0 +1,94 @@
+/* ==========================================================================
+   About Us page: renders content from localStorage.
+   ========================================================================== */
+
+(function (window, document) {
+  'use strict';
+
+  var esc = null;
+  var resolveImage = null;
+
+  function renderIntro(about) {
+    document.getElementById('aboutIntro').innerHTML = window.HM.util.paragraphs(about.intro);
+    document.getElementById('aboutMission').textContent = about.mission || '';
+    document.getElementById('aboutVision').textContent = about.vision || '';
+  }
+
+  function renderValues(about) {
+    var grid = document.getElementById('valuesGrid');
+    var values = about.values || [];
+    if (!values.length) {
+      grid.innerHTML = '<div class="empty-state">Values will appear here once added.</div>';
+      return;
+    }
+    grid.innerHTML = values.map(function (v) {
+      return (
+        '<div class="value-card reveal">' +
+          '<h3>' + esc(v.title) + '</h3>' +
+          '<p>' + esc(v.description) + '</p>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function renderTeam(about) {
+    var grid = document.getElementById('teamGrid');
+    var team = about.team || [];
+    if (!team.length) {
+      grid.innerHTML = '<div class="empty-state">Team members will appear here once added.</div>';
+      return;
+    }
+    grid.innerHTML = team.map(function (member) {
+      return (
+        '<div class="team-card reveal">' +
+          '<div class="team-card__photo"><img src="' + resolveImage(member.photo) + '" alt="' + esc(member.name) + '" loading="lazy"></div>' +
+          '<div class="team-card__body">' +
+            '<div class="team-card__name">' + esc(member.name) + '</div>' +
+            '<div class="team-card__role">' + esc(member.role) + '</div>' +
+            '<p class="team-card__bio">' + esc(member.bio) + '</p>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function renderPartners(about) {
+    var grid = document.getElementById('partnersGrid');
+    var partners = about.partners || [];
+    if (!partners.length) {
+      grid.innerHTML = '<div class="empty-state">Partner organizations will appear here once added.</div>';
+      return;
+    }
+    grid.innerHTML = partners.map(function (p) {
+      return (
+        '<div class="partner-logo reveal">' +
+          '<img src="' + resolveImage(p.logo) + '" alt="' + esc(p.name) + '" loading="lazy">' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function initContactForm() {
+    var form = document.getElementById('contactForm');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      window.HM.ui.toast('Thank you — your message has been noted. (Demo form: no data is sent.)', 'success');
+      form.reset();
+    });
+  }
+
+  function init() {
+    esc = window.HM.util.escapeHtml;
+    resolveImage = window.HM.util.resolveImage;
+    var about = window.HM.about.get();
+    renderIntro(about);
+    renderValues(about);
+    renderTeam(about);
+    renderPartners(about);
+    initContactForm();
+    window.HM.ui.initScrollReveal();
+  }
+
+  window.HM.ready(init);
+})(window, document);

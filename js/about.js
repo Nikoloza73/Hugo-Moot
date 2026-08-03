@@ -68,16 +68,6 @@
     }).join('');
   }
 
-  function initContactForm() {
-    var form = document.getElementById('contactForm');
-    if (!form) return;
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      window.HM.ui.toast('Thank you — your message has been noted. (Demo form: no data is sent.)', 'success');
-      form.reset();
-    });
-  }
-
   function init() {
     esc = window.HM.util.escapeHtml;
     resolveImage = window.HM.util.resolveImage;
@@ -86,7 +76,6 @@
     renderValues(about);
     renderTeam(about);
     renderPartners(about);
-    initContactForm();
     window.HM.ui.initScrollReveal();
   }
 

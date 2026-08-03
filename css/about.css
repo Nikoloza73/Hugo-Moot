@@ -142,36 +142,3 @@
 @media (max-width: 760px) {
   .partners-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
-/* ---- Contact ------------------------------------------------------------*/
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-xl);
-  align-items: start;
-}
-
-.contact-list {
-  margin-top: var(--space-md);
-}
-
-.contact-list li {
-  padding-block: var(--space-xs);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.contact-list__label {
-  display: block;
-  font-size: var(--fs-tiny);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-ink-muted);
-  margin-bottom: 0.2rem;
-}
-
-.contact-form .card__body { padding: var(--space-lg); }
-
-@media (max-width: 860px) {
-  .contact-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
-}

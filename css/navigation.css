@@ -115,10 +115,6 @@
   transform: scaleX(1);
 }
 
-.nav-cta {
-  flex-shrink: 0;
-}
-
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -186,6 +182,4 @@
     padding-block: 0.4rem;
   }
 
-  .nav-cta { width: 100%; }
-  .nav-cta .btn { width: 100%; }
 }

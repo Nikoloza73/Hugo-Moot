@@ -5,23 +5,23 @@
 
 :root {
   /* ---- Brand / Accent ------------------------------------------------- */
-  --color-accent: #8a1f2b;          /* primary accent (replace to re-brand) */
-  --color-accent-dark: #6c1620;
-  --color-accent-light: #f3e4e2;
+  --color-accent: #1b5e9e;          /* primary accent (replace to re-brand) */
+  --color-accent-dark: #123f6b;
+  --color-accent-light: #e4eff9;
 
   /* ---- Neutrals --------------------------------------------------------*/
   --color-white: #ffffff;
-  --color-bg: #fbfaf8;
-  --color-bg-alt: #f3f1ec;
-  --color-border: #e2ded4;
-  --color-border-strong: #c9c4b8;
+  --color-bg: #f7fafc;
+  --color-bg-alt: #edf2f7;
+  --color-border: #dce4eb;
+  --color-border-strong: #b7c4d1;
 
-  --color-ink: #1b1b18;
-  --color-ink-soft: #4a4740;
-  --color-ink-muted: #7a766c;
-  --color-ink-faint: #a19c8f;
+  --color-ink: #1b1f24;
+  --color-ink-soft: #454c54;
+  --color-ink-muted: #707882;
+  --color-ink-faint: #9ca6b0;
 
-  --color-navy: #16213a;
+  --color-navy: #0b2d4a;
 
   /* ---- Feedback ----------------------------------------------------- */
   --color-success: #2f6e4f;

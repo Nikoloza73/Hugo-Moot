@@ -348,7 +348,7 @@
   margin-top: calc(-1 * 1px);
 }
 
-.page-banner .eyebrow { color: #d9b98f; }
+.page-banner .eyebrow { color: #8fc1ea; }
 .page-banner h1 { color: var(--color-white); }
 .page-banner p { color: rgba(255,255,255,0.72); max-width: 620px; margin-top: var(--space-xs); }
 

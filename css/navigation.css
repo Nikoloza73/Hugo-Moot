@@ -46,6 +46,13 @@
   font-size: 1rem;
 }
 
+.brand__mark--has-logo {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 0;
+}
+
 .brand__text {
   display: flex;
   flex-direction: column;

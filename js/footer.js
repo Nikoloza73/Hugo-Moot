@@ -53,6 +53,7 @@
 
     if (settings.logo) {
       document.querySelectorAll('[data-settings-logo]').forEach(function (wrap) {
+        wrap.classList.add('brand__mark--has-logo');
         wrap.innerHTML = '<img src="' + window.HM.util.resolveImage(settings.logo) + '" alt="' + window.HM.util.escapeHtml(settings.orgName || 'Logo') + '" style="width:100%;height:100%;object-fit:contain;">';
       });
     }

@@ -57,6 +57,12 @@
         wrap.innerHTML = '<img src="' + window.HM.util.resolveImage(settings.logo) + '" alt="' + window.HM.util.escapeHtml(settings.orgName || 'Logo') + '" style="width:100%;height:100%;object-fit:contain;">';
       });
     }
+
+    if (settings.heroImage) {
+      document.querySelectorAll('[data-settings-hero]').forEach(function (img) {
+        img.src = window.HM.util.resolveImage(settings.heroImage);
+      });
+    }
   }
 
   window.HM.ready(applySettings);

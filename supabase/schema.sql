@@ -67,6 +67,7 @@ create table if not exists site_settings (
   org_name text not null default 'Hugo Moot',
   tagline text not null default '',
   logo text not null default '',
+  hero_image text not null default '',
   email text not null default '',
   phone text not null default '',
   address text not null default '',
@@ -74,6 +75,9 @@ create table if not exists site_settings (
   footer_text text not null default '',
   updated_at timestamptz not null default now()
 );
+
+-- Migration for projects created before hero_image existed (safe to re-run).
+alter table site_settings add column if not exists hero_image text not null default '';
 
 create table if not exists activity_log (
   id uuid primary key default gen_random_uuid(),

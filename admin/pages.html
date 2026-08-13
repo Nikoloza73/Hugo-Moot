@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us | Hugo Moot Admin</title>
+  <title>Pages | Hugo Moot Admin</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="../images/logo.png" type="image/png">
 
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/admin.css">
 </head>
-<body class="admin-body" data-page="about">
+<body class="admin-body" data-page="pages">
   <div class="admin-layout">
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -74,48 +74,54 @@
     <main class="admin-main">
       <div class="admin-topbar">
         <div>
-          <h1>About Us</h1>
-          <p class="muted">Update the text shown on your public About Us page.</p>
+          <h1>Pages</h1>
+          <p class="muted">Create extra pages for your website — like "Sponsors" or "FAQ" — beyond the built-in ones. Pages you mark "Show in Menu" appear in your site's navigation automatically.</p>
         </div>
+        <button type="button" class="btn btn-primary btn-lg" id="addPageBtn">+ Add Page</button>
       </div>
 
-      <form id="aboutForm">
-        <div class="settings-card">
-          <h2>Organization Description</h2>
-          <p class="muted">A general introduction to Hugo Moot, shown near the top of the About Us page.</p>
-          <div class="form-field">
-            <textarea id="aboutIntroInput" style="min-height:160px;"></textarea>
-            <p class="form-hint">Tip: leave a blank line between paragraphs.</p>
+      <div class="admin-list" id="pagesList"></div>
+    </main>
+  </div>
+
+  <!-- Add / Edit Page Modal -->
+  <div class="modal-overlay" id="pageModal">
+    <div class="modal modal--form">
+      <button type="button" class="modal__close" id="pageModalClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h3 id="pageModalTitle">Add Page</h3>
+      <p class="muted">Fill in the details below, then click Save.</p>
+
+      <form id="pageForm">
+        <div class="form-field">
+          <label for="pageTitleInput">Page Title</label>
+          <input type="text" id="pageTitleInput" required placeholder="e.g. Sponsors">
+        </div>
+        <div class="form-field">
+          <label for="pageContentInput">Page Content</label>
+          <textarea id="pageContentInput" required placeholder="Write the page's content here." style="min-height:180px;"></textarea>
+          <p class="form-hint">Tip: leave a blank line between paragraphs.</p>
+        </div>
+        <div class="form-field">
+          <label>Featured Image (optional)</label>
+          <div class="image-upload" id="pageImageUpload">
+            <img class="image-upload__preview" style="display:none;">
+            <span class="image-upload__label">Click or drag to upload an image</span>
+            <input type="file" accept="image/*">
           </div>
         </div>
-
-        <div class="settings-card">
-          <h2>Mission</h2>
-          <div class="form-field">
-            <textarea id="aboutMissionInput" style="min-height:110px;"></textarea>
-          </div>
+        <div class="form-field" style="margin-bottom:0; display:flex; align-items:center; gap:0.6rem;">
+          <input type="checkbox" id="pageShowInNav" checked style="width:20px; height:20px;">
+          <label for="pageShowInNav" style="margin-bottom:0;">Show in website menu</label>
         </div>
 
-        <div class="settings-card">
-          <h2>Vision</h2>
-          <div class="form-field">
-            <textarea id="aboutVisionInput" style="min-height:110px;"></textarea>
-          </div>
-        </div>
-
-        <div class="settings-card">
-          <h2>Values</h2>
-          <p class="muted">Add up to a few short values with a title and one-line description each.</p>
-          <div class="value-repeater" id="valueRepeater"></div>
-          <button type="button" class="btn btn-secondary btn-sm" id="addValueBtn" style="margin-top: var(--space-sm);">+ Add Value</button>
-        </div>
-
-        <div class="save-bar">
-          <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
-          <span class="muted" id="aboutSavedHint"></span>
+        <div class="modal__actions" style="margin-top: var(--space-md);">
+          <button type="button" class="btn btn-secondary" id="pageModalCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="pageSubmitBtn">Save Page</button>
         </div>
       </form>
-    </main>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -123,6 +129,6 @@
   <script src="../js/data-store.js"></script>
   <script src="../js/ui.js"></script>
   <script src="../js/admin/admin-common.js"></script>
-  <script src="../js/admin/about.js"></script>
+  <script src="../js/admin/pages.js"></script>
 </body>
 </html>

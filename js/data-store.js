@@ -214,6 +214,44 @@
     return cats.filter(function (c, i) { return cats.indexOf(c) === i; });
   };
 
+  /* ---- Custom pages (owner-created pages beyond the built-in content types) */
+
+  var customPagesCollection = makeCollection('custom_pages', { showInNav: 'show_in_nav' });
+
+  customPagesCollection.getBySlug = async function (slug) {
+    var res = await client.from('custom_pages').select('*').eq('slug', slug).maybeSingle();
+    if (res.error) { console.error('HM: custom_pages getBySlug', res.error); throw res.error; }
+    return res.data ? mapFromRow(res.data, { showInNav: 'show_in_nav' }) : null;
+  };
+
+  customPagesCollection.getNavItems = async function () {
+    var res = await client.from('custom_pages').select('title, slug').eq('show_in_nav', true).order('created_at', { ascending: true });
+    if (res.error) { console.error('HM: custom_pages getNavItems', res.error); throw res.error; }
+    return res.data || [];
+  };
+
+  function slugify(str) {
+    return (str || '').toLowerCase().trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || 'page';
+  }
+
+  customPagesCollection.generateUniqueSlug = async function (title, excludeId) {
+    var base = slugify(title);
+    var res = await client.from('custom_pages').select('id, slug');
+    if (res.error) { console.error('HM: custom_pages generateUniqueSlug', res.error); throw res.error; }
+    var taken = (res.data || [])
+      .filter(function (row) { return row.id !== excludeId; })
+      .map(function (row) { return row.slug; });
+    var slug = base;
+    var n = 2;
+    while (taken.indexOf(slug) !== -1) {
+      slug = base + '-' + n;
+      n += 1;
+    }
+    return slug;
+  };
+
   /* ---- Settings & About (singleton rows, id = 1) --------------------------*/
 
   var settingsKeyMap = { orgName: 'org_name', footerText: 'footer_text', heroImage: 'hero_image' };
@@ -311,6 +349,7 @@
     news: newsCollection,
     events: eventsCollection,
     gallery: galleryCollection,
+    customPages: customPagesCollection,
     activity: activityApi,
     auth: authApi
   };

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us | Hugo Moot</title>
-  <meta name="description" content="Learn about Hugo Moot's mission, vision, values, team, and partners.">
+  <title id="docTitle">Page | Hugo Moot</title>
+  <meta name="description" content="Hugo Moot">
   <link rel="icon" href="../images/logo.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,9 +18,9 @@
   <link rel="stylesheet" href="../css/navigation.css">
   <link rel="stylesheet" href="../css/footer.css">
   <link rel="stylesheet" href="../css/animations.css">
-  <link rel="stylesheet" href="../css/about.css">
+  <link rel="stylesheet" href="../css/page.css">
 </head>
-<body data-page="about">
+<body data-page="custom">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -34,7 +34,7 @@
       </a>
 
       <nav class="main-nav" id="mainNav" aria-label="Primary">
-        <ul class="main-nav__list">
+        <ul class="main-nav__list" id="mainNavList">
           <li><a href="../index.html" class="main-nav__link" data-page="home">Home</a></li>
           <li><a href="about.html" class="main-nav__link" data-page="about">About Us</a></li>
           <li><a href="history.html" class="main-nav__link" data-page="history">History</a></li>
@@ -53,73 +53,14 @@
   <main id="main">
     <div class="page-banner">
       <div class="container">
-        <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>About Us</span></div>
-        <span class="eyebrow">Who We Are</span>
-        <h1>About Hugo Moot</h1>
-        <p>Placeholder overview text describing what the organization does, on the interior page banner.</p>
+        <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span id="pageBreadcrumb">Page</span></div>
+        <h1 id="pageHeading">Loading…</h1>
       </div>
     </div>
 
-    <!-- Introduction -->
     <section class="section-tight">
-      <div class="container container--narrow reveal">
-        <p class="lead" id="aboutIntro">Loading...</p>
-      </div>
-    </section>
-
-    <hr class="container divider" style="max-width: var(--container-max);">
-
-    <!-- Mission & Vision -->
-    <section class="section-tight bg-alt">
-      <div class="container mv-grid">
-        <div class="mv-card reveal">
-          <span class="icon-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2Z"/></svg>
-          </span>
-          <h3>Our Mission</h3>
-          <p id="aboutMission">Loading...</p>
-        </div>
-        <div class="mv-card reveal">
-          <span class="icon-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>
-          </span>
-          <h3>Our Vision</h3>
-          <p id="aboutVision">Loading...</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Values -->
-    <section>
-      <div class="container">
-        <div class="section-heading section-heading--center reveal">
-          <span class="eyebrow">What Guides Us</span>
-          <h2>Our Values</h2>
-        </div>
-        <div class="values-grid" id="valuesGrid"></div>
-      </div>
-    </section>
-
-    <!-- Team -->
-    <section class="bg-alt">
-      <div class="container">
-        <div class="section-heading section-heading--center reveal">
-          <span class="eyebrow">Meet the People</span>
-          <h2>Our Team</h2>
-          <p>Placeholder profiles for the individuals who organize Hugo Moot each year.</p>
-        </div>
-        <div class="team-grid" id="teamGrid"></div>
-      </div>
-    </section>
-
-    <!-- Partners -->
-    <section>
-      <div class="container">
-        <div class="section-heading section-heading--center reveal">
-          <span class="eyebrow">Working Together</span>
-          <h2>Our Partners</h2>
-        </div>
-        <div class="partners-grid" id="partnersGrid"></div>
+      <div class="container container--narrow page-content" id="pageBody">
+        <p class="muted">Loading…</p>
       </div>
     </section>
   </main>
@@ -175,6 +116,6 @@
   <script src="../js/navigation.js"></script>
   <script src="../js/footer.js"></script>
   <script src="../js/custom-nav.js"></script>
-  <script src="../js/about.js"></script>
+  <script src="../js/page.js"></script>
 </body>
 </html>

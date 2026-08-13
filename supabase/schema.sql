@@ -85,6 +85,19 @@ create table if not exists activity_log (
   created_at timestamptz not null default now()
 );
 
+-- Owner-created custom pages (e.g. "Sponsors", "FAQ") that don't fit the
+-- built-in content types. Rendered by pages/page.html?slug=... and, when
+-- show_in_nav is true, automatically added to the site navigation menu.
+create table if not exists custom_pages (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  slug text not null unique,
+  content text not null default '',
+  image text not null default '',
+  show_in_nav boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
 -- ---------------------------------------------------------------------------
 -- Row Level Security
 -- Public visitors (anon key) may only READ content tables.
@@ -99,12 +112,13 @@ alter table history_milestones enable row level security;
 alter table about_content enable row level security;
 alter table site_settings enable row level security;
 alter table activity_log enable row level security;
+alter table custom_pages enable row level security;
 
 do $$
 declare
   t text;
 begin
-  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings'] loop
+  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings', 'custom_pages'] loop
     execute format('drop policy if exists "public_read" on %I', t);
     execute format('create policy "public_read" on %I for select using (true)', t);
 

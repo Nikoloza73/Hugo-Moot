@@ -1,0 +1,19 @@
+/* ==========================================================================
+   Generic custom page template
+   ========================================================================== */
+
+.page-content {
+  max-width: var(--container-narrow);
+}
+
+.page-content p {
+  margin-bottom: var(--space-sm);
+}
+
+.page-featured-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--space-lg);
+}

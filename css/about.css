@@ -2,30 +2,26 @@
    About Us page
    ========================================================================== */
 
-.intro-grid {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: var(--space-xl);
-  align-items: stretch;
+.intro-float {
+  overflow: hidden; /* clearfix so the section wraps the floated image's height */
 }
 
-.intro-grid__media img {
-  width: 100%;
-  height: 100%;
-  min-height: 320px;
+.intro-float__image {
+  float: left;
+  width: 46%;
+  max-width: 340px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
+  margin: 0.35rem var(--space-lg) var(--space-md) 0;
   border: 1px solid var(--color-border);
 }
 
-@media (max-width: 860px) {
-  .intro-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-  }
-
-  .intro-grid__media img {
-    height: auto;
-    aspect-ratio: 4 / 3;
+@media (max-width: 640px) {
+  .intro-float__image {
+    float: none;
+    width: 100%;
+    max-width: none;
+    margin: 0 0 var(--space-md) 0;
   }
 }
 

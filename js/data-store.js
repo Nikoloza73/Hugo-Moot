@@ -276,18 +276,20 @@
     }
   };
 
+  var aboutKeyMap = { introImage: 'intro_image' };
+
   var aboutApi = {
     get: async function () {
       var res = await client.from('about_content').select('*').eq('id', 1).maybeSingle();
       if (res.error) { console.error('HM: about get', res.error); throw res.error; }
-      return res.data || {};
+      return res.data ? mapFromRow(res.data, aboutKeyMap) : {};
     },
     save: async function (patch) {
-      var row = Object.assign({}, patch);
+      var row = mapToRow(patch, aboutKeyMap);
       delete row.id;
       var res = await client.from('about_content').update(row).eq('id', 1).select().single();
       if (res.error) { console.error('HM: about save', res.error); throw res.error; }
-      return res.data;
+      return mapFromRow(res.data, aboutKeyMap);
     }
   };
 

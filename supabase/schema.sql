@@ -54,6 +54,7 @@ create table if not exists history_milestones (
 create table if not exists about_content (
   id int primary key default 1 check (id = 1),
   intro text not null default '',
+  intro_image text not null default '',
   mission text not null default '',
   vision text not null default '',
   values jsonb not null default '[]'::jsonb,
@@ -61,6 +62,9 @@ create table if not exists about_content (
   partners jsonb not null default '[]'::jsonb,
   updated_at timestamptz not null default now()
 );
+
+-- Migration for projects created before intro_image existed (safe to re-run).
+alter table about_content add column if not exists intro_image text not null default '';
 
 create table if not exists site_settings (
   id int primary key default 1 check (id = 1),

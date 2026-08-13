@@ -7,6 +7,8 @@
 
   var els = {};
   var values = [];
+  var introImageUpload = null;
+  var originalIntroImage = '';
 
   function valueRowTemplate(value, index) {
     var esc = window.HM.util.escapeHtml;
@@ -54,6 +56,8 @@
     document.getElementById('aboutIntroInput').value = about.intro || '';
     document.getElementById('aboutMissionInput').value = about.mission || '';
     document.getElementById('aboutVisionInput').value = about.vision || '';
+    originalIntroImage = about.introImage || '';
+    introImageUpload.reset(about.introImage || '');
     values = (about.values || []).slice();
     renderValues();
   }
@@ -67,12 +71,19 @@
     submitBtn.disabled = true;
 
     try {
+      var newIntroImage = introImageUpload.getValue() || '';
       await window.HM.about.save({
         intro: document.getElementById('aboutIntroInput').value.trim(),
+        introImage: newIntroImage,
         mission: document.getElementById('aboutMissionInput').value.trim(),
         vision: document.getElementById('aboutVisionInput').value.trim(),
         values: values
       });
+
+      if (originalIntroImage && originalIntroImage !== newIntroImage) {
+        await window.HM.util.deleteImage(originalIntroImage);
+      }
+      originalIntroImage = newIntroImage;
 
       await window.HM.activity.log('Updated About Us content');
       window.HM.ui.toast('About Us page updated successfully.', 'success');
@@ -87,6 +98,8 @@
   function init() {
     els.repeater = document.getElementById('valueRepeater');
     els.form = document.getElementById('aboutForm');
+
+    introImageUpload = window.HM.admin.wireImageUpload(document.getElementById('aboutIntroImageUpload'), '', function () {}, 'about');
 
     document.getElementById('addValueBtn').addEventListener('click', function () {
       syncValuesFromDom();

@@ -12,6 +12,7 @@
     document.getElementById('aboutIntro').innerHTML = window.HM.util.paragraphs(about.intro);
     document.getElementById('aboutMission').textContent = about.mission || '';
     document.getElementById('aboutVision').textContent = about.vision || '';
+    document.getElementById('aboutIntroImage').src = resolveImage(about.introImage);
   }
 
   function renderValues(about) {

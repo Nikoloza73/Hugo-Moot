@@ -1,14 +1,17 @@
 /* ==========================================================================
    Admin: Gallery management — upload photos, delete them, assign a
-   category and/or event. Every field auto-saves on change.
+   year and/or event. Every field auto-saves on change. Years are
+   managed as their own admin-curated list (see "Gallery Years" above
+   the upload box) rather than free-text categories.
    ========================================================================== */
 
 (function (window, document) {
   'use strict';
 
   var els = {};
+  var state = { years: [] };
 
-  function icon() {
+  function closeIcon() {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>';
   }
 
@@ -21,13 +24,26 @@
     return opts;
   }
 
+  function yearOptions(selectedValue) {
+    var names = state.years.map(function (y) { return y.name; });
+    if (selectedValue && names.indexOf(selectedValue) === -1) {
+      names.push(selectedValue); // keep an existing (e.g. legacy) value selectable even if not in the managed list
+    }
+    var opts = '<option value="">— Select Year —</option>';
+    opts += names.map(function (name) {
+      var sel = name === selectedValue ? ' selected' : '';
+      return '<option value="' + window.HM.util.escapeHtml(name) + '"' + sel + '>' + window.HM.util.escapeHtml(name) + '</option>';
+    }).join('');
+    return opts;
+  }
+
   function cardTemplate(photo, events) {
     var esc = window.HM.util.escapeHtml;
     return (
       '<div class="admin-gallery-card" data-id="' + photo.id + '">' +
         '<div class="admin-gallery-card__img">' +
           '<img src="' + window.HM.util.resolveImage(photo.src) + '" alt="">' +
-          '<button type="button" class="admin-gallery-card__delete js-delete-photo" aria-label="Delete photo">' + icon() + '</button>' +
+          '<button type="button" class="admin-gallery-card__delete js-delete-photo" aria-label="Delete photo">' + closeIcon() + '</button>' +
         '</div>' +
         '<div class="admin-gallery-card__fields">' +
           '<div>' +
@@ -35,8 +51,8 @@
             '<input type="text" class="js-field-caption" value="' + esc(photo.caption) + '" placeholder="Describe this photo">' +
           '</div>' +
           '<div>' +
-            '<label>Category</label>' +
-            '<input type="text" class="js-field-category" list="categoryOptions" value="' + esc(photo.category || '') + '" placeholder="e.g. Oral Rounds">' +
+            '<label>Year</label>' +
+            '<select class="js-field-category">' + yearOptions(photo.category) + '</select>' +
           '</div>' +
           '<div>' +
             '<label>Assign to Event</label>' +
@@ -48,24 +64,97 @@
     );
   }
 
-  function ensureDatalist() {
-    if (document.getElementById('categoryOptions')) return;
-    var datalist = document.createElement('datalist');
-    datalist.id = 'categoryOptions';
-    document.body.appendChild(datalist);
-  }
-
-  async function refreshDatalist() {
-    var datalist = document.getElementById('categoryOptions');
-    var categories = await window.HM.gallery.getCategories();
-    datalist.innerHTML = categories.map(function (c) { return '<option value="' + window.HM.util.escapeHtml(c) + '">'; }).join('');
-  }
-
   function flashSaved(card) {
     var hint = card.querySelector('.js-saved-hint');
     hint.textContent = 'Saved ✓';
     window.setTimeout(function () { hint.textContent = ''; }, 1500);
   }
+
+  /* ---- Year management ---------------------------------------------------*/
+
+  function yearChipTemplate(year) {
+    return (
+      '<span class="year-chip" data-id="' + year.id + '">' +
+        window.HM.util.escapeHtml(year.name) +
+        '<button type="button" class="year-chip__remove js-remove-year" aria-label="Remove year">' +
+          '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>' +
+        '</button>' +
+      '</span>'
+    );
+  }
+
+  async function loadYears() {
+    try {
+      state.years = await window.HM.galleryYears.getSorted();
+    } catch (err) {
+      console.error('HM: failed to load gallery years', err);
+      state.years = [];
+    }
+  }
+
+  function renderYearChips() {
+    if (!state.years.length) {
+      els.yearChips.innerHTML = '<span class="muted" style="font-size:var(--fs-small);">No years added yet.</span>';
+    } else {
+      els.yearChips.innerHTML = state.years.map(yearChipTemplate).join('');
+    }
+
+    els.yearChips.querySelectorAll('.js-remove-year').forEach(function (btn) {
+      btn.addEventListener('click', async function () {
+        var chip = btn.closest('.year-chip');
+        var id = chip.getAttribute('data-id');
+        var year = state.years.find(function (y) { return y.id === id; });
+        var confirmed = await window.HM.ui.confirmDialog({
+          title: 'Remove ' + (year ? year.name : 'this year') + '?',
+          message: 'This only removes it from the filter list — any photos already tagged with this year keep their tag.',
+          confirmLabel: 'Remove'
+        });
+        if (!confirmed) return;
+        try {
+          await window.HM.galleryYears.delete(id);
+          await window.HM.activity.log('Removed gallery year "' + (year ? year.name : '') + '"');
+          window.HM.ui.toast('Year removed.', 'success');
+          await loadYears();
+          renderYearChips();
+          renderGrid();
+        } catch (err) {
+          window.HM.ui.toast('Could not remove this year. Please try again.', 'danger');
+        }
+      });
+    });
+  }
+
+  function initYearForm() {
+    var input = document.getElementById('newYearInput');
+    var btn = document.getElementById('addYearBtn');
+
+    async function addYear() {
+      var name = input.value.trim();
+      if (!name) return;
+      btn.disabled = true;
+      try {
+        await window.HM.galleryYears.add({ name: name });
+        await window.HM.activity.log('Added gallery year "' + name + '"');
+        window.HM.ui.toast('Year added.', 'success');
+        input.value = '';
+        await loadYears();
+        renderYearChips();
+        renderGrid();
+      } catch (err) {
+        var msg = (err && err.code === '23505') ? 'That year has already been added.' : 'Could not add this year. Please try again.';
+        window.HM.ui.toast(msg, 'danger');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    btn.addEventListener('click', addYear);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); addYear(); }
+    });
+  }
+
+  /* ---- Photo grid ----------------------------------------------------------*/
 
   async function renderGrid() {
     var photos = await window.HM.gallery.getAll();
@@ -75,7 +164,6 @@
     }
     var events = await window.HM.events.getSorted();
     els.grid.innerHTML = photos.map(function (p) { return cardTemplate(p, events); }).join('');
-    refreshDatalist();
     wireCardEvents();
   }
 
@@ -93,11 +181,10 @@
       });
       card.querySelector('.js-field-category').addEventListener('change', async function (e) {
         try {
-          await window.HM.gallery.update(id, { category: e.target.value.trim() || 'Uncategorized' });
+          await window.HM.gallery.update(id, { category: e.target.value });
           flashSaved(card);
-          refreshDatalist();
         } catch (err) {
-          window.HM.ui.toast('Could not save the category. Please try again.', 'danger');
+          window.HM.ui.toast('Could not save the year. Please try again.', 'danger');
         }
       });
       card.querySelector('.js-field-event').addEventListener('change', async function (e) {
@@ -141,7 +228,7 @@
             return window.HM.gallery.add({
               src: url,
               caption: 'New photo',
-              category: 'Uncategorized',
+              category: '',
               eventId: null
             });
           }));
@@ -158,10 +245,15 @@
     });
   }
 
-  function init() {
+  async function init() {
     els.grid = document.getElementById('adminGalleryGrid');
-    ensureDatalist();
+    els.yearChips = document.getElementById('yearChips');
+
+    initYearForm();
     initUpload();
+
+    await loadYears();
+    renderYearChips();
     renderGrid();
   }
 

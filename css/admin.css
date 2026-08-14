@@ -442,6 +442,35 @@
   min-height: 1em;
 }
 
+/* ---- Gallery year chips (admin) ----------------------------------------*/
+
+.year-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.5rem 0.45rem 1rem;
+  border-radius: 999px;
+  background: var(--color-accent-light);
+  color: var(--color-accent-dark);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.year-chip__remove {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--color-accent);
+}
+
+.year-chip__remove:hover {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
 /* ---- Simple settings/about forms ---------------------------------------*/
 
 .settings-card {

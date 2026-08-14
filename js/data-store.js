@@ -207,11 +207,12 @@
     return this.getAll('year', true);
   };
 
-  galleryCollection.getCategories = async function () {
-    var res = await client.from('gallery_photos').select('category');
-    if (res.error) { console.error('HM: gallery getCategories', res.error); throw res.error; }
-    var cats = (res.data || []).map(function (r) { return r.category; }).filter(Boolean);
-    return cats.filter(function (c, i) { return cats.indexOf(c) === i; });
+  /* ---- Gallery years (admin-managed filter options for the public Gallery) */
+
+  var galleryYearsCollection = makeCollection('gallery_years');
+
+  galleryYearsCollection.getSorted = async function () {
+    return this.getAll('name', true);
   };
 
   /* ---- Custom pages (owner-created pages beyond the built-in content types) */
@@ -380,6 +381,7 @@
     events: eventsCollection,
     gallery: galleryCollection,
     customPages: customPagesCollection,
+    galleryYears: galleryYearsCollection,
     activity: activityApi,
     auth: authApi
   };

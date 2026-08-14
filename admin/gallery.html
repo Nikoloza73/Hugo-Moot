@@ -79,7 +79,17 @@
       <div class="admin-topbar">
         <div>
           <h1>Gallery</h1>
-          <p class="muted">Upload photos and, if you like, assign them to a category or a specific event.</p>
+          <p class="muted">Upload photos and, if you like, assign them to a year or a specific event.</p>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h2>Gallery Years</h2>
+        <p class="muted">Add a year here before uploading that year's photos. Every year you add shows up as a filter on the public Gallery page.</p>
+        <div id="yearChips" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom: var(--space-sm);"></div>
+        <div style="display:flex; gap:0.5rem; max-width:280px;">
+          <input type="text" id="newYearInput" placeholder="e.g. 2027" inputmode="numeric" maxlength="4" style="flex:1; padding:0.85rem 1rem; border:1px solid var(--color-border-strong); border-radius:var(--radius-sm); font-size:var(--fs-body);">
+          <button type="button" class="btn btn-secondary" id="addYearBtn">+ Add</button>
         </div>
       </div>
 

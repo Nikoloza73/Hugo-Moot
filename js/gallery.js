@@ -8,6 +8,7 @@
   var state = {
     all: [],
     filtered: [],
+    years: [],
     activeCategory: 'All',
     activeEventId: null,
     lightboxIndex: -1
@@ -37,8 +38,7 @@
   }
 
   function renderFilters() {
-    var cats = state.all.map(function (p) { return p.category; }).filter(Boolean);
-    var categories = ['All'].concat(cats.filter(function (c, i) { return cats.indexOf(c) === i; }));
+    var categories = ['All'].concat(state.years.map(function (y) { return y.name; }));
 
     els.filters.innerHTML = categories.map(function (cat) {
       var active = cat === state.activeCategory ? ' is-active' : '';
@@ -72,7 +72,7 @@
     });
 
     if (!state.filtered.length) {
-      els.grid.innerHTML = '<div class="empty-state">No photos in this category yet.</div>';
+      els.grid.innerHTML = '<div class="empty-state">No photos from this year yet.</div>';
       return;
     }
 
@@ -148,6 +148,12 @@
     els.eventNotice = document.getElementById('eventFilterNotice');
 
     state.all = await window.HM.gallery.getAll();
+    try {
+      state.years = await window.HM.galleryYears.getSorted();
+    } catch (err) {
+      console.error('HM: failed to load gallery years', err);
+      state.years = [];
+    }
     state.activeEventId = new URLSearchParams(window.location.search).get('event');
 
     renderFilters();

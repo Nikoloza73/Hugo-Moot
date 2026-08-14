@@ -41,6 +41,16 @@ create table if not exists gallery_photos (
   created_at timestamptz not null default now()
 );
 
+-- Admin-managed list of years shown as filter options on the public
+-- Gallery page. The "category" column above holds each photo's year
+-- (as free text, matching one of these names) so no foreign key is
+-- enforced — deleting a year here does not touch existing photos.
+create table if not exists gallery_years (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  created_at timestamptz not null default now()
+);
+
 create table if not exists history_milestones (
   id uuid primary key default gen_random_uuid(),
   year text not null,
@@ -150,12 +160,13 @@ alter table site_settings enable row level security;
 alter table activity_log enable row level security;
 alter table custom_pages enable row level security;
 alter table home_content enable row level security;
+alter table gallery_years enable row level security;
 
 do $$
 declare
   t text;
 begin
-  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings', 'custom_pages', 'home_content'] loop
+  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings', 'custom_pages', 'home_content', 'gallery_years'] loop
     execute format('drop policy if exists "public_read" on %I', t);
     execute format('create policy "public_read" on %I for select using (true)', t);
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Admin: Home Page management — hero banner and introduction text.
+   Admin: Home Page management — hero banner text.
    ========================================================================== */
 
 (function (window, document) {
@@ -12,10 +12,6 @@
     document.getElementById('heroTextInput').value = content.heroText || '';
     document.getElementById('heroPrimaryBtnInput').value = content.heroPrimaryBtn || '';
     document.getElementById('heroSecondaryBtnInput').value = content.heroSecondaryBtn || '';
-    document.getElementById('introEyebrowInput').value = content.introEyebrow || '';
-    document.getElementById('introHeadingInput').value = content.introHeading || '';
-    document.getElementById('introLeadInput').value = content.introLead || '';
-    document.getElementById('introBodyInput').value = content.introBody || '';
   }
 
   async function handleSubmit(e) {
@@ -29,11 +25,7 @@
         heroHeading: document.getElementById('heroHeadingInput').value.trim(),
         heroText: document.getElementById('heroTextInput').value.trim(),
         heroPrimaryBtn: document.getElementById('heroPrimaryBtnInput').value.trim(),
-        heroSecondaryBtn: document.getElementById('heroSecondaryBtnInput').value.trim(),
-        introEyebrow: document.getElementById('introEyebrowInput').value.trim(),
-        introHeading: document.getElementById('introHeadingInput').value.trim(),
-        introLead: document.getElementById('introLeadInput').value.trim(),
-        introBody: document.getElementById('introBodyInput').value.trim()
+        heroSecondaryBtn: document.getElementById('heroSecondaryBtnInput').value.trim()
       });
 
       await window.HM.activity.log('Updated homepage text');

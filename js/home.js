@@ -93,12 +93,6 @@
     fillIfPresent('heroText', content.heroText);
     fillIfPresent('heroPrimaryBtn', content.heroPrimaryBtn);
     fillIfPresent('heroSecondaryBtn', content.heroSecondaryBtn);
-    fillIfPresent('introEyebrow', content.introEyebrow);
-    fillIfPresent('introHeading', content.introHeading);
-    fillIfPresent('introLead', content.introLead);
-    if (content.introBody) {
-      document.getElementById('introBody').innerHTML = window.HM.util.paragraphs(content.introBody);
-    }
   }
 
   window.HM.ready(function () {

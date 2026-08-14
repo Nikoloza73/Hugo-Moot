@@ -16,6 +16,14 @@
   border: 1px solid var(--color-border);
 }
 
+#aboutIntro p {
+  margin-bottom: var(--space-sm);
+}
+
+#aboutIntro p:last-child {
+  margin-bottom: 0;
+}
+
 @media (max-width: 640px) {
   .intro-float__image {
     float: none;

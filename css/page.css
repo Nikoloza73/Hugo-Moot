@@ -10,6 +10,15 @@
   margin-bottom: var(--space-sm);
 }
 
+.page-content a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.page-content a:hover {
+  color: var(--color-accent-dark);
+}
+
 .page-featured-image {
   width: 100%;
   aspect-ratio: 16 / 9;

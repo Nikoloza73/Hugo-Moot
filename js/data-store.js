@@ -45,13 +45,29 @@
       .replace(/'/g, '&#39;');
   }
 
+  function linkify(escapedText) {
+    var urlPattern = /(https?:\/\/[^\s<]+|www\.[^\s<]+)/gi;
+    return escapedText.replace(urlPattern, function (match) {
+      var trailing = '';
+      var core = match;
+      var trailingPunctuation = /[).,;:!?\]]+$/;
+      var trailingMatch = core.match(trailingPunctuation);
+      if (trailingMatch) {
+        trailing = trailingMatch[0];
+        core = core.slice(0, core.length - trailing.length);
+      }
+      var href = core.indexOf('http') === 0 ? core : 'https://' + core;
+      return '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + core + '</a>' + trailing;
+    });
+  }
+
   function paragraphs(str) {
     if (!str) return '';
     return str
       .split(/\n\s*\n/)
       .map(function (p) { return p.trim(); })
       .filter(Boolean)
-      .map(function (p) { return '<p>' + escapeHtml(p).replace(/\n/g, '<br>') + '</p>'; })
+      .map(function (p) { return '<p>' + linkify(escapeHtml(p).replace(/\n/g, '<br>')) + '</p>'; })
       .join('');
   }
 

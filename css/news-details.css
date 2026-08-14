@@ -45,6 +45,15 @@
   margin-bottom: var(--space-sm);
 }
 
+.article-body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.article-body a:hover {
+  color: var(--color-accent-dark);
+}
+
 .article-gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

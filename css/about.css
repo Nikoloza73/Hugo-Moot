@@ -24,6 +24,15 @@
   margin-bottom: 0;
 }
 
+#aboutIntro a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+#aboutIntro a:hover {
+  color: var(--color-accent-dark);
+}
+
 @media (max-width: 640px) {
   .intro-float__image {
     float: none;

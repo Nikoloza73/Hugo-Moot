@@ -73,8 +73,37 @@
     window.HM.ui.initScrollReveal();
   }
 
+  function fillIfPresent(id, value) {
+    if (!value) return;
+    document.getElementById(id).textContent = value;
+  }
+
+  async function renderHomeContent() {
+    var content;
+    try {
+      content = await window.HM.home.get();
+    } catch (err) {
+      console.error('HM: failed to load homepage content', err);
+      return;
+    }
+    if (!content) return;
+
+    fillIfPresent('heroEyebrow', content.heroEyebrow);
+    fillIfPresent('heroHeading', content.heroHeading);
+    fillIfPresent('heroText', content.heroText);
+    fillIfPresent('heroPrimaryBtn', content.heroPrimaryBtn);
+    fillIfPresent('heroSecondaryBtn', content.heroSecondaryBtn);
+    fillIfPresent('introEyebrow', content.introEyebrow);
+    fillIfPresent('introHeading', content.introHeading);
+    fillIfPresent('introLead', content.introLead);
+    if (content.introBody) {
+      document.getElementById('introBody').innerHTML = window.HM.util.paragraphs(content.introBody);
+    }
+  }
+
   window.HM.ready(function () {
     renderLatestNews();
     renderEvents();
+    renderHomeContent();
   });
 })(window, document);

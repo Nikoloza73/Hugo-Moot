@@ -66,6 +66,38 @@ create table if not exists about_content (
 -- Migration for projects created before intro_image existed (safe to re-run).
 alter table about_content add column if not exists intro_image text not null default '';
 
+-- Editable copy for the homepage hero banner and introduction section.
+create table if not exists home_content (
+  id int primary key default 1 check (id = 1),
+  hero_eyebrow text not null default '',
+  hero_heading text not null default '',
+  hero_text text not null default '',
+  hero_primary_btn text not null default '',
+  hero_secondary_btn text not null default '',
+  intro_eyebrow text not null default '',
+  intro_heading text not null default '',
+  intro_lead text not null default '',
+  intro_body text not null default '',
+  updated_at timestamptz not null default now()
+);
+
+insert into home_content (
+  id, hero_eyebrow, hero_heading, hero_text, hero_primary_btn, hero_secondary_btn,
+  intro_eyebrow, intro_heading, intro_lead, intro_body
+) values (
+  1,
+  'International Moot Court Competition',
+  'Advancing the Practice of International Law',
+  'Hugo Moot brings together the world''s most promising law students to research, write, and argue before distinguished panels of international jurists.',
+  'Learn More',
+  'Our History',
+  'Who We Are',
+  'A Global Community of Advocates',
+  'For over a decade, Hugo Moot has provided a rigorous academic platform for students of public international law to test their research and advocacy skills against peers from around the world.',
+  'This is placeholder introductory content. Real copy describing the organization''s history, purpose, and community will be provided and inserted here in a future update.'
+)
+on conflict (id) do nothing;
+
 create table if not exists site_settings (
   id int primary key default 1 check (id = 1),
   org_name text not null default 'Hugo Moot',
@@ -117,12 +149,13 @@ alter table about_content enable row level security;
 alter table site_settings enable row level security;
 alter table activity_log enable row level security;
 alter table custom_pages enable row level security;
+alter table home_content enable row level security;
 
 do $$
 declare
   t text;
 begin
-  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings', 'custom_pages'] loop
+  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings', 'custom_pages', 'home_content'] loop
     execute format('drop policy if exists "public_read" on %I', t);
     execute format('create policy "public_read" on %I for select using (true)', t);
 

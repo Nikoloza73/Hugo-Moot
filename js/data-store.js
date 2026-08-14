@@ -293,6 +293,33 @@
     }
   };
 
+  var homeKeyMap = {
+    heroEyebrow: 'hero_eyebrow',
+    heroHeading: 'hero_heading',
+    heroText: 'hero_text',
+    heroPrimaryBtn: 'hero_primary_btn',
+    heroSecondaryBtn: 'hero_secondary_btn',
+    introEyebrow: 'intro_eyebrow',
+    introHeading: 'intro_heading',
+    introLead: 'intro_lead',
+    introBody: 'intro_body'
+  };
+
+  var homeApi = {
+    get: async function () {
+      var res = await client.from('home_content').select('*').eq('id', 1).maybeSingle();
+      if (res.error) { console.error('HM: home get', res.error); throw res.error; }
+      return res.data ? mapFromRow(res.data, homeKeyMap) : {};
+    },
+    save: async function (patch) {
+      var row = mapToRow(patch, homeKeyMap);
+      delete row.id;
+      var res = await client.from('home_content').update(row).eq('id', 1).select().single();
+      if (res.error) { console.error('HM: home save', res.error); throw res.error; }
+      return mapFromRow(res.data, homeKeyMap);
+    }
+  };
+
   /* ---- Activity log (staff-only, per RLS) ---------------------------------*/
 
   var activityApi = {
@@ -346,6 +373,7 @@
       deleteImage: deleteImage
     },
     settings: settingsApi,
+    home: homeApi,
     about: aboutApi,
     history: historyCollection,
     news: newsCollection,

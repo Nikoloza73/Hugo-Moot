@@ -80,6 +80,14 @@
   }
 }
 
+#introBody p {
+  margin-bottom: var(--space-sm);
+}
+
+#introBody p:last-child {
+  margin-bottom: 0;
+}
+
 /* ---- News grid -------------------------------------------------------- */
 
 .news-grid {

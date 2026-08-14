@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Hugo Moot Admin</title>
+  <title>Home Page | Hugo Moot Admin</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="../images/logo.png" type="image/png">
 
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/admin.css">
 </head>
-<body class="admin-body" data-page="dashboard">
+<body class="admin-body" data-page="home">
   <div class="admin-layout">
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -78,60 +78,65 @@
     <main class="admin-main">
       <div class="admin-topbar">
         <div>
-          <h1>Welcome Back</h1>
-          <p class="muted">This is your control center. Choose an action below to update the website.</p>
+          <h1>Home Page</h1>
+          <p class="muted">Edit the headline and text shown at the top of your website's homepage.</p>
         </div>
       </div>
 
-      <div class="dashboard-tiles">
-        <a href="news.html" class="dashboard-tile">
-          <span class="dashboard-tile__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
-          </span>
-          <span class="dashboard-tile__title">Add News</span>
-          <span class="dashboard-tile__desc">Publish an announcement or update for visitors to read.</span>
-        </a>
-        <a href="events.html" class="dashboard-tile">
-          <span class="dashboard-tile__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
-          </span>
-          <span class="dashboard-tile__title">Add Event</span>
-          <span class="dashboard-tile__desc">Create this year's Hugo Moot event and its photo gallery.</span>
-        </a>
-        <a href="gallery.html" class="dashboard-tile">
-          <span class="dashboard-tile__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg>
-          </span>
-          <span class="dashboard-tile__title">Add Gallery Photos</span>
-          <span class="dashboard-tile__desc">Upload new photographs to the public photo gallery.</span>
-        </a>
-        <a href="about.html" class="dashboard-tile">
-          <span class="dashboard-tile__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-          </span>
-          <span class="dashboard-tile__title">Edit About Us</span>
-          <span class="dashboard-tile__desc">Update your description, mission, vision, and values.</span>
-        </a>
-        <a href="history.html" class="dashboard-tile">
-          <span class="dashboard-tile__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-          </span>
-          <span class="dashboard-tile__title">Edit History</span>
-          <span class="dashboard-tile__desc">Add or update milestones on your history timeline.</span>
-        </a>
-        <a href="settings.html" class="dashboard-tile">
-          <span class="dashboard-tile__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-          </span>
-          <span class="dashboard-tile__title">Website Settings</span>
-          <span class="dashboard-tile__desc">Change your organization name, logo, and contact details.</span>
-        </a>
-      </div>
+      <form id="homeForm">
+        <div class="settings-card">
+          <h2>Hero Banner</h2>
+          <p class="muted">The large section at the very top of the homepage, over the big photo.</p>
+          <div class="form-field">
+            <label for="heroEyebrowInput">Small Label</label>
+            <input type="text" id="heroEyebrowInput" placeholder="e.g. International Moot Court Competition">
+          </div>
+          <div class="form-field">
+            <label for="heroHeadingInput">Headline</label>
+            <input type="text" id="heroHeadingInput" required placeholder="e.g. Advancing the Practice of International Law">
+          </div>
+          <div class="form-field">
+            <label for="heroTextInput">Subtext</label>
+            <textarea id="heroTextInput" style="min-height:90px;"></textarea>
+          </div>
+          <div class="form-row" style="margin-bottom:0;">
+            <div class="form-field" style="margin-bottom:0;">
+              <label for="heroPrimaryBtnInput">First Button Label</label>
+              <input type="text" id="heroPrimaryBtnInput" placeholder="e.g. Learn More">
+            </div>
+            <div class="form-field" style="margin-bottom:0;">
+              <label for="heroSecondaryBtnInput">Second Button Label</label>
+              <input type="text" id="heroSecondaryBtnInput" placeholder="e.g. Our History">
+            </div>
+          </div>
+        </div>
 
-      <div class="activity-panel">
-        <h2>Recent Activity</h2>
-        <ul class="activity-list" id="activityList"></ul>
-      </div>
+        <div class="settings-card">
+          <h2>Introduction Section</h2>
+          <p class="muted">The "Who We Are" text block just below the hero banner.</p>
+          <div class="form-field">
+            <label for="introEyebrowInput">Small Label</label>
+            <input type="text" id="introEyebrowInput" placeholder="e.g. Who We Are">
+          </div>
+          <div class="form-field">
+            <label for="introHeadingInput">Heading</label>
+            <input type="text" id="introHeadingInput" required placeholder="e.g. A Global Community of Advocates">
+          </div>
+          <div class="form-field">
+            <label for="introLeadInput">Lead Sentence</label>
+            <textarea id="introLeadInput" style="min-height:80px;"></textarea>
+          </div>
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="introBodyInput">Body Text</label>
+            <textarea id="introBodyInput" style="min-height:120px;"></textarea>
+            <p class="form-hint">Tip: leave a blank line between paragraphs.</p>
+          </div>
+        </div>
+
+        <div class="save-bar">
+          <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+        </div>
+      </form>
     </main>
   </div>
 
@@ -140,6 +145,6 @@
   <script src="../js/data-store.js"></script>
   <script src="../js/ui.js"></script>
   <script src="../js/admin/admin-common.js"></script>
-  <script src="../js/admin/dashboard.js"></script>
+  <script src="../js/admin/home.js"></script>
 </body>
 </html>

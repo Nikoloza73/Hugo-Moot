@@ -44,7 +44,7 @@
 
   function eventCardTemplate(event) {
     var esc = window.HM.util.escapeHtml;
-    var url = 'pages/gallery.html?event=' + encodeURIComponent(event.id);
+    var url = 'pages/event-details.html?id=' + encodeURIComponent(event.id);
     return (
       '<a class="event-card reveal" href="' + url + '">' +
         '<div class="event-card__media"><img src="' + window.HM.util.resolveImage(event.coverImage) + '" alt="' + esc(event.name) + '" loading="lazy"></div>' +
@@ -53,7 +53,7 @@
           '<h3 class="event-card__name">' + esc(event.name) + '</h3>' +
           '<div class="event-card__date">' + window.HM.util.formatDate(event.date, 'short') + '</div>' +
           '<p class="event-card__desc">' + esc(event.description) + '</p>' +
-          '<span class="btn-text">View Event Photos →</span>' +
+          '<span class="btn-text">View Event →</span>' +
         '</div>' +
       '</a>'
     );

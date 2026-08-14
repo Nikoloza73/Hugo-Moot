@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="docTitle">Page | Hugo Moot</title>
-  <meta name="description" content="Hugo Moot">
+  <title>Events | Hugo Moot</title>
+  <meta name="description" content="Every Hugo Moot event, year by year.">
   <link rel="icon" href="../images/logo.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,9 +18,9 @@
   <link rel="stylesheet" href="../css/navigation.css">
   <link rel="stylesheet" href="../css/footer.css">
   <link rel="stylesheet" href="../css/animations.css">
-  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/events.css">
 </head>
-<body data-page="custom">
+<body data-page="events">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -34,7 +34,7 @@
       </a>
 
       <nav class="main-nav" id="mainNav" aria-label="Primary">
-        <ul class="main-nav__list" id="mainNavList">
+        <ul class="main-nav__list">
           <li><a href="../index.html" class="main-nav__link" data-page="home">Home</a></li>
           <li><a href="about.html" class="main-nav__link" data-page="about">About Us</a></li>
           <li><a href="history.html" class="main-nav__link" data-page="history">History</a></li>
@@ -53,14 +53,18 @@
   <main id="main">
     <div class="page-banner">
       <div class="container">
-        <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span id="pageBreadcrumb">Page</span></div>
-        <h1 id="pageHeading">Loading…</h1>
+        <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Events</span></div>
+        <span class="eyebrow">Every Year</span>
+        <h1>Events</h1>
+        <p>Every edition of Hugo Moot, from the most recent back to the very first.</p>
       </div>
     </div>
 
-    <section class="section-tight">
-      <div class="container container--narrow page-content" id="pageBody">
-        <p class="muted">Loading…</p>
+    <section>
+      <div class="container">
+        <div id="eventsByYear">
+          <!-- Populated by js/events-list.js -->
+        </div>
       </div>
     </section>
   </main>
@@ -116,6 +120,6 @@
   <script src="../js/navigation.js"></script>
   <script src="../js/footer.js"></script>
   <script src="../js/custom-nav.js"></script>
-  <script src="../js/page.js"></script>
+  <script src="../js/events-list.js"></script>
 </body>
 </html>

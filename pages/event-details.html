@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="docTitle">Page | Hugo Moot</title>
-  <meta name="description" content="Hugo Moot">
+  <title id="docTitle">Event | Hugo Moot</title>
+  <meta name="description" content="Hugo Moot event details and photos.">
   <link rel="icon" href="../images/logo.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,9 +18,9 @@
   <link rel="stylesheet" href="../css/navigation.css">
   <link rel="stylesheet" href="../css/footer.css">
   <link rel="stylesheet" href="../css/animations.css">
-  <link rel="stylesheet" href="../css/page.css">
+  <link rel="stylesheet" href="../css/event-details.css">
 </head>
-<body data-page="custom">
+<body data-page="events">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -34,7 +34,7 @@
       </a>
 
       <nav class="main-nav" id="mainNav" aria-label="Primary">
-        <ul class="main-nav__list" id="mainNavList">
+        <ul class="main-nav__list">
           <li><a href="../index.html" class="main-nav__link" data-page="home">Home</a></li>
           <li><a href="about.html" class="main-nav__link" data-page="about">About Us</a></li>
           <li><a href="history.html" class="main-nav__link" data-page="history">History</a></li>
@@ -51,18 +51,11 @@
   </header>
 
   <main id="main">
-    <div class="page-banner">
-      <div class="container">
-        <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span id="pageBreadcrumb">Page</span></div>
-        <h1 id="pageHeading">Loading…</h1>
+    <article id="eventRoot">
+      <div class="container section-tight">
+        <p class="muted">Loading...</p>
       </div>
-    </div>
-
-    <section class="section-tight">
-      <div class="container container--narrow page-content" id="pageBody">
-        <p class="muted">Loading…</p>
-      </div>
-    </section>
+    </article>
   </main>
 
   <footer class="site-footer">
@@ -109,6 +102,23 @@
     </div>
   </footer>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <button type="button" class="lightbox__close" id="lightboxClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--prev" id="lightboxPrev" aria-label="Previous image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <button type="button" class="lightbox__nav lightbox__nav--next" id="lightboxNext" aria-label="Next image">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <figure class="lightbox__figure">
+      <img src="" alt="" id="lightboxImage">
+      <figcaption id="lightboxCaption"></figcaption>
+    </figure>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="../js/supabase-config.js"></script>
   <script src="../js/data-store.js"></script>
@@ -116,6 +126,6 @@
   <script src="../js/navigation.js"></script>
   <script src="../js/footer.js"></script>
   <script src="../js/custom-nav.js"></script>
-  <script src="../js/page.js"></script>
+  <script src="../js/event-details.js"></script>
 </body>
 </html>

@@ -119,11 +119,15 @@ create table if not exists site_settings (
   address text not null default '',
   social jsonb not null default '{}'::jsonb,
   footer_text text not null default '',
+  nav_order jsonb not null default '["home","about","committee","history","gallery","events","news"]'::jsonb,
   updated_at timestamptz not null default now()
 );
 
 -- Migration for projects created before hero_image existed (safe to re-run).
 alter table site_settings add column if not exists hero_image text not null default '';
+
+-- Migration for projects created before nav_order existed (safe to re-run).
+alter table site_settings add column if not exists nav_order jsonb not null default '["home","about","committee","history","gallery","events","news"]'::jsonb;
 
 create table if not exists activity_log (
   id uuid primary key default gen_random_uuid(),

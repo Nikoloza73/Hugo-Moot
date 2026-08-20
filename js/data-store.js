@@ -271,7 +271,7 @@
 
   /* ---- Settings & About (singleton rows, id = 1) --------------------------*/
 
-  var settingsKeyMap = { orgName: 'org_name', footerText: 'footer_text', heroImage: 'hero_image' };
+  var settingsKeyMap = { orgName: 'org_name', footerText: 'footer_text', heroImage: 'hero_image', navOrder: 'nav_order' };
 
   var settingsApi = {
     get: async function () {

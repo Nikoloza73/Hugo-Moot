@@ -9,10 +9,20 @@
   var resolveImage = null;
 
   function renderIntro(about) {
-    document.getElementById('aboutIntro').innerHTML = window.HM.util.paragraphs(about.intro);
+    var introEl = document.getElementById('aboutIntro');
+    var imgEl = document.getElementById('aboutIntroImage');
+    introEl.innerHTML = window.HM.util.paragraphs(about.intro);
     document.getElementById('aboutMission').textContent = about.mission || '';
     document.getElementById('aboutVision').textContent = about.vision || '';
-    document.getElementById('aboutIntroImage').src = resolveImage(about.introImage);
+    imgEl.src = resolveImage(about.introImage);
+
+    var paras = introEl.querySelectorAll('p');
+    for (var i = 0; i < paras.length; i++) {
+      if (paras[i].textContent.trim().toLowerCase() === 'about hugo sinzheimer') {
+        paras[i].insertAdjacentElement('afterend', imgEl);
+        break;
+      }
+    }
   }
 
   function renderValues(about) {

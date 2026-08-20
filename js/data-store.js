@@ -337,6 +337,21 @@
     }
   };
 
+  var committeeApi = {
+    get: async function () {
+      var res = await client.from('committee_content').select('*').eq('id', 1).maybeSingle();
+      if (res.error) { console.error('HM: committee get', res.error); throw res.error; }
+      return res.data ? mapFromRow(res.data, {}) : {};
+    },
+    save: async function (patch) {
+      var row = mapToRow(patch, {});
+      delete row.id;
+      var res = await client.from('committee_content').update(row).eq('id', 1).select().single();
+      if (res.error) { console.error('HM: committee save', res.error); throw res.error; }
+      return mapFromRow(res.data, {});
+    }
+  };
+
   /* ---- Activity log (staff-only, per RLS) ---------------------------------*/
 
   var activityApi = {
@@ -392,6 +407,7 @@
     settings: settingsApi,
     home: homeApi,
     about: aboutApi,
+    committee: committeeApi,
     history: historyCollection,
     news: newsCollection,
     events: eventsCollection,

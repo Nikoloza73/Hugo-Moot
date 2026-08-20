@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>News | Hugo Moot Admin</title>
+  <title>Committee | Hugo Moot Admin</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="../images/logo.png" type="image/png">
 
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/admin.css">
 </head>
-<body class="admin-body" data-page="news">
+<body class="admin-body" data-page="committee">
   <div class="admin-layout">
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -82,72 +82,34 @@
     <main class="admin-main">
       <div class="admin-topbar">
         <div>
-          <h1>News</h1>
-          <p class="muted">Publish announcements and updates. The three most recent articles automatically appear on your homepage.</p>
+          <h1>Committee</h1>
+          <p class="muted">Update the text and members shown on your public Committee page.</p>
         </div>
-        <button type="button" class="btn btn-primary btn-lg" id="addNewsBtn">+ Add News</button>
       </div>
 
-      <div class="admin-list" id="newsList"></div>
-    </main>
-  </div>
-
-  <!-- Add / Edit News Modal -->
-  <div class="modal-overlay" id="newsModal">
-    <div class="modal modal--form">
-      <button type="button" class="modal__close" id="newsModalClose" aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-      <h3 id="newsModalTitle">Add News Article</h3>
-      <p class="muted">Fill in the details below, then click Publish.</p>
-
-      <form id="newsForm">
-        <div class="form-field">
-          <label for="newsTitle">Title</label>
-          <input type="text" id="newsTitle" required placeholder="e.g. Registration Opens for 2027 Season">
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label for="newsDate">Publication Date</label>
-            <input type="date" id="newsDate" required>
+      <form id="committeeForm">
+        <div class="settings-card">
+          <h2>Introduction</h2>
+          <p class="muted">Shown as the opening paragraph at the top of the Committee page.</p>
+          <div class="form-field" style="margin-bottom:0;">
+            <textarea id="committeeIntroInput" style="min-height:120px;"></textarea>
+            <p class="form-hint">Tip: leave a blank line between paragraphs.</p>
           </div>
-          <div class="form-field">
-            <label for="newsCategory">Category</label>
-            <input type="text" id="newsCategory" placeholder="e.g. Announcements">
-          </div>
-        </div>
-        <div class="form-field">
-          <label for="newsSummary">Short Summary</label>
-          <textarea id="newsSummary" required placeholder="A one or two sentence summary shown on news cards." style="min-height:80px;"></textarea>
-        </div>
-        <div class="form-field">
-          <label for="newsContent">Full Content</label>
-          <textarea id="newsContent" required placeholder="The full article text. Leave a blank line between paragraphs."></textarea>
-          <p class="form-hint">Tip: leave a blank line between paragraphs.</p>
-        </div>
-        <div class="form-field">
-          <label>Featured Image</label>
-          <div class="image-upload" id="newsImageUpload">
-            <img class="image-upload__preview" style="display:none;">
-            <span class="image-upload__label">Click or drag to upload an image</span>
-            <input type="file" accept="image/*">
-          </div>
-        </div>
-        <div class="form-field">
-          <label>Additional Images (optional)</label>
-          <div class="image-upload" id="newsGalleryUpload">
-            <span class="image-upload__label">Click to add photos to this article's gallery</span>
-            <input type="file" accept="image/*" multiple>
-          </div>
-          <div class="admin-gallery-grid" id="newsGalleryPreview" style="margin-top: var(--space-xs);"></div>
         </div>
 
-        <div class="modal__actions" style="margin-top: var(--space-md);">
-          <button type="button" class="btn btn-secondary" id="newsModalCancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="newsSubmitBtn">Publish News</button>
+        <div class="settings-card">
+          <h2>Current Members of the Committee</h2>
+          <p class="muted">Each member is shown with a photo on the left and one paragraph of text next to it.</p>
+          <div class="value-repeater" id="memberRepeater"></div>
+          <button type="button" class="btn btn-secondary btn-sm" id="addMemberBtn" style="margin-top: var(--space-sm);">+ Add Member</button>
+        </div>
+
+        <div class="save-bar">
+          <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+          <span class="muted" id="committeeSavedHint"></span>
         </div>
       </form>
-    </div>
+    </main>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -155,6 +117,6 @@
   <script src="../js/data-store.js"></script>
   <script src="../js/ui.js"></script>
   <script src="../js/admin/admin-common.js"></script>
-  <script src="../js/admin/news.js"></script>
+  <script src="../js/admin/committee.js"></script>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events | Hugo Moot</title>
-  <meta name="description" content="Every Hugo Moot event, year by year.">
+  <title>Committee | Hugo Moot</title>
+  <meta name="description" content="Meet the current members of the Hugo Moot committee.">
   <link rel="icon" href="../images/logo.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,9 +18,9 @@
   <link rel="stylesheet" href="../css/navigation.css">
   <link rel="stylesheet" href="../css/footer.css">
   <link rel="stylesheet" href="../css/animations.css">
-  <link rel="stylesheet" href="../css/events.css">
+  <link rel="stylesheet" href="../css/committee.css">
 </head>
-<body data-page="events">
+<body data-page="committee">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -54,18 +54,22 @@
   <main id="main">
     <div class="page-banner">
       <div class="container">
-        <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Events</span></div>
-        <span class="eyebrow">Every Year</span>
-        <h1>Events</h1>
-        <p>Every edition of Hugo Moot, from the most recent back to the very first.</p>
+        <div class="breadcrumb"><a href="../index.html">Home</a><span>/</span><span>Committee</span></div>
+        <span class="eyebrow">Who We Are</span>
+        <h1>Committee</h1>
       </div>
     </div>
 
-    <section>
-      <div class="container">
-        <div id="eventsByYear">
-          <!-- Populated by js/events-list.js -->
-        </div>
+    <section class="section-tight">
+      <div class="container container--narrow">
+        <div class="lead" id="committeeIntro">Loading...</div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container container--narrow">
+        <h2 class="committee-heading">Current members of the committee:</h2>
+        <div class="committee-list" id="committeeList"></div>
       </div>
     </section>
   </main>
@@ -121,6 +125,6 @@
   <script src="../js/navigation.js"></script>
   <script src="../js/footer.js"></script>
   <script src="../js/custom-nav.js"></script>
-  <script src="../js/events-list.js"></script>
+  <script src="../js/committee.js"></script>
 </body>
 </html>

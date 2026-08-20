@@ -131,6 +131,15 @@ create table if not exists activity_log (
   created_at timestamptz not null default now()
 );
 
+-- Singleton row for the public Committee page: an intro paragraph followed
+-- by a list of members, each shown as a photo with one paragraph of text.
+create table if not exists committee_content (
+  id int primary key default 1 check (id = 1),
+  intro text not null default '',
+  members jsonb not null default '[]'::jsonb,
+  updated_at timestamptz not null default now()
+);
+
 -- Owner-created custom pages (e.g. "Sponsors", "FAQ") that don't fit the
 -- built-in content types. Rendered by pages/page.html?slug=... and, when
 -- show_in_nav is true, automatically added to the site navigation menu.
@@ -161,12 +170,13 @@ alter table activity_log enable row level security;
 alter table custom_pages enable row level security;
 alter table home_content enable row level security;
 alter table gallery_years enable row level security;
+alter table committee_content enable row level security;
 
 do $$
 declare
   t text;
 begin
-  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings', 'custom_pages', 'home_content', 'gallery_years'] loop
+  foreach t in array array['news', 'events', 'gallery_photos', 'history_milestones', 'about_content', 'site_settings', 'custom_pages', 'home_content', 'gallery_years', 'committee_content'] loop
     execute format('drop policy if exists "public_read" on %I', t);
     execute format('create policy "public_read" on %I for select using (true)', t);
 
@@ -236,6 +246,21 @@ values (
     {"name":"Global Justice Foundation","logo":"images/placeholder-square.svg"},
     {"name":"Peace Palace Association","logo":"images/placeholder-square.svg"},
     {"name":"World Legal Forum","logo":"images/placeholder-square.svg"}
+  ]'::jsonb
+)
+on conflict (id) do nothing;
+
+insert into committee_content (id, intro, members)
+values (
+  1,
+  'Placeholder paragraph introducing the Hugo Moot committee, shown above the list of current members. Replace with real copy from the admin panel.',
+  '[
+    {"photo":"images/placeholder-portrait.svg","text":"Placeholder paragraph for committee member 1."},
+    {"photo":"images/placeholder-portrait.svg","text":"Placeholder paragraph for committee member 2."},
+    {"photo":"images/placeholder-portrait.svg","text":"Placeholder paragraph for committee member 3."},
+    {"photo":"images/placeholder-portrait.svg","text":"Placeholder paragraph for committee member 4."},
+    {"photo":"images/placeholder-portrait.svg","text":"Placeholder paragraph for committee member 5."},
+    {"photo":"images/placeholder-portrait.svg","text":"Placeholder paragraph for committee member 6."}
   ]'::jsonb
 )
 on conflict (id) do nothing;
